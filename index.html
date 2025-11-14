@@ -564,6 +564,14 @@
         line-height: 1.2;
       }
 
+      .splash-preview .mini .text span {
+        display: block;
+        font-size: 16px;
+        letter-spacing: 0.08em;
+        margin-top: 6px;
+        opacity: 0.8;
+      }
+
       .ad-slot {
         display: none;
       }
@@ -732,7 +740,7 @@
               🌐 Favicon/Web (192px)
             </button>
             <button class="accent" id="downloadAllButton">
-              📦 전체 자산 ZIP
+              📦 전체 다운로드 ZIP
             </button>
           </div>
           <p class="helper">
@@ -786,6 +794,18 @@
             <li>② 스플래시 탭으로 전환해 미리보기를 확인합니다.</li>
             <li>③ 아래 다운로드 버튼으로 전체 해상도를 저장합니다.</li>
           </ul>
+          <div class="form-group">
+            <label for="splashTitleInput">메인 제목 (줄바꿈 가능)</label>
+            <textarea id="splashTitleInput" rows="2">AshLight</textarea>
+          </div>
+          <div class="form-group">
+            <label for="splashSubtitleInput">보조 문구</label>
+            <input
+              type="text"
+              id="splashSubtitleInput"
+              value="EMOJI ICON STUDIO"
+            />
+          </div>
           <div class="button-row">
             <button class="primary" id="downloadSplashButton">
               🌅 스플래시 PNG (1242 × 2688)
@@ -811,7 +831,9 @@
           <div class="splash-preview">
             <div class="mini">
               <div class="emoji" data-splash-preview-emoji>🚀</div>
-              <div class="text">AshLight<br />Studio</div>
+              <div class="text" data-splash-preview-text>
+                AshLight<span>EMOJI ICON STUDIO</span>
+              </div>
             </div>
           </div>
         </section>
@@ -845,8 +867,7 @@
         <h3>서버 후원 & 유지비</h3>
         <p>
           서비스가 마음에 들면 서버 비용과 유지보수를 위한 작은 후원을
-          부탁드려요. 아래 기업은행 계좌 정보는 예시이니 실제 운영자 정보에 맞게
-          조정해 사용하면 됩니다.
+          부탁드려요. 감사합니다!
         </p>
         <div class="donation-box">
           <div class="donation-item">
@@ -864,7 +885,7 @@
         </div>
       </div>
 
-      <div class="meta-card">
+      <!-- <div class="meta-card">
         <h3>AshLight 광고 / 공지 영역</h3>
         <p>
           Google AdSense, 카카오 애드핏 등 스크립트를 붙여 수익화하거나 출시
@@ -877,7 +898,7 @@
           인터랙션 이후에 스크립트를 주입하는 방식을 추천합니다. `.ad-slot` 의
           `display:none` 을 해제하면 플레이스홀더가 다시 나타납니다.
         </p>
-      </div>
+      </div> -->
     </section>
 
     <footer>
@@ -896,6 +917,8 @@
         radius: 220,
         emojiSize: 420,
         glow: 0.22,
+        splashTitle: "AshLight",
+        splashSubtitle: "EMOJI ICON STUDIO",
       };
 
       const emojiInput = document.getElementById("emojiInput");
@@ -916,6 +939,15 @@
         "[data-splash-preview-emoji]"
       );
       const splashScreen = document.getElementById("splash-screen");
+      const splashTitleElement = document.getElementById("splashTitle");
+      const splashSubtitleElement = document.getElementById("splashSubtitle");
+      const splashTitleInput = document.getElementById("splashTitleInput");
+      const splashSubtitleInput = document.getElementById(
+        "splashSubtitleInput"
+      );
+      const splashPreviewTexts = document.querySelectorAll(
+        "[data-splash-preview-text]"
+      );
       const downloadSplashButton = document.getElementById(
         "downloadSplashButton"
       );
@@ -926,6 +958,17 @@
       const setCSSVar = (name, value) =>
         document.documentElement.style.setProperty(name, value);
 
+      const escapeHtml = (value = "") =>
+        String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+      const formatMultiline = (value = "") =>
+        escapeHtml(value).replace(/\r?\n/g, "<br />");
+
       function applyState() {
         mainEmoji.textContent = state.emoji;
         previewEmojis.forEach((el) => (el.textContent = state.emoji));
@@ -933,6 +976,51 @@
           splashEmoji.textContent = state.emoji;
         }
         splashPreviewEmojis.forEach((el) => (el.textContent = state.emoji));
+        const hasTitle =
+          typeof state.splashTitle === "string" &&
+          state.splashTitle.trim().length > 0;
+        const hasSubtitle =
+          typeof state.splashSubtitle === "string" &&
+          state.splashSubtitle.trim().length > 0;
+        const titleHtml = hasTitle ? formatMultiline(state.splashTitle) : "";
+        const subtitleHtml = hasSubtitle
+          ? formatMultiline(state.splashSubtitle)
+          : "";
+        if (splashTitleElement) {
+          if (hasTitle) {
+            splashTitleElement.style.display = "";
+            splashTitleElement.innerHTML = titleHtml;
+          } else {
+            splashTitleElement.style.display = "none";
+            splashTitleElement.innerHTML = "";
+          }
+        }
+        if (splashSubtitleElement) {
+          if (hasSubtitle) {
+            splashSubtitleElement.style.display = "";
+            splashSubtitleElement.style.marginTop = hasTitle ? "" : "0";
+            splashSubtitleElement.innerHTML = subtitleHtml;
+          } else {
+            splashSubtitleElement.style.display = "none";
+            splashSubtitleElement.style.marginTop = "";
+            splashSubtitleElement.innerHTML = "";
+          }
+        }
+        if (splashTitleInput && document.activeElement !== splashTitleInput) {
+          splashTitleInput.value = state.splashTitle;
+        }
+        if (
+          splashSubtitleInput &&
+          document.activeElement !== splashSubtitleInput
+        ) {
+          splashSubtitleInput.value = state.splashSubtitle;
+        }
+        splashPreviewTexts.forEach((el) => {
+          const subtitleBlock = hasSubtitle
+            ? `<span>${subtitleHtml}</span>`
+            : "";
+          el.innerHTML = `${titleHtml}${subtitleBlock}`;
+        });
 
         setCSSVar("--gradient-start", state.gradientStart);
         setCSSVar("--gradient-end", state.gradientEnd);
@@ -972,6 +1060,23 @@
       radiusInput.addEventListener("input", updateFromInputs);
       emojiSizeInput.addEventListener("input", updateFromInputs);
       glowInput.addEventListener("input", updateFromInputs);
+
+      const updateSplashText = () => {
+        if (splashTitleInput) {
+          state.splashTitle = splashTitleInput.value.replace(/\r\n/g, "\n");
+        }
+        if (splashSubtitleInput) {
+          state.splashSubtitle = splashSubtitleInput.value;
+        }
+        applyState();
+      };
+
+      if (splashTitleInput) {
+        splashTitleInput.addEventListener("input", updateSplashText);
+      }
+      if (splashSubtitleInput) {
+        splashSubtitleInput.addEventListener("input", updateSplashText);
+      }
 
       function setActiveTool(targetId) {
         toolButtons.forEach((button) => {
@@ -1070,7 +1175,15 @@
       document
         .getElementById("copyConfigButton")
         .addEventListener("click", async () => {
-          const text = `emoji=${state.emoji} | start=${state.gradientStart} | end=${state.gradientEnd} | angle=${state.angle}deg | radius=${state.radius}px`;
+          const text = [
+            `emoji=${state.emoji}`,
+            `start=${state.gradientStart}`,
+            `end=${state.gradientEnd}`,
+            `angle=${state.angle}deg`,
+            `radius=${state.radius}px`,
+            `title=${state.splashTitle || ""}`,
+            `subtitle=${state.splashSubtitle || ""}`,
+          ].join(" | ");
           try {
             await navigator.clipboard.writeText(text);
             alert("설정이 복사되었습니다. 친구에게 그대로 공유하세요!");
