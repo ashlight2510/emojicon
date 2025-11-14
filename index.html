@@ -398,6 +398,63 @@
         color: rgba(255, 255, 255, 0.86);
       }
 
+      .donation-qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .donation-qr-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .donation-qr-code {
+        width: 200px;
+        height: 200px;
+        border-radius: 12px;
+        background: white;
+        padding: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .donation-qr-label {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .donation-links {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .donation-link-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 24px;
+        background: linear-gradient(135deg, #fee500 0%, #ffc700 100%);
+        color: #3c1e1e;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(254, 229, 0, 0.3);
+      }
+
+      .donation-link-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(254, 229, 0, 0.4);
+      }
+
       .splash-grid {
         max-width: 1400px;
         margin: 0 auto;
@@ -806,19 +863,25 @@
           서비스가 마음에 들면 유지보수를 위한 작은 후원을 부탁드려요.
           감사합니다!
         </p>
-        <div class="donation-box">
-          <div class="donation-item">
-            <span>기업은행</span>
-            <code>327-05-1016-01-014</code>
+        <div class="donation-qr-container">
+          <div class="donation-qr-wrapper">
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://qr.kakaopay.com/FQrDWYNo2&margin=2"
+              alt="카카오페이 QR 코드"
+              class="donation-qr-code"
+            />
+            <p class="donation-qr-label">🙏 감사합니다</p>
           </div>
-        </div>
-        <div class="button-row" style="margin-top: 16px">
-          <button
-            class="secondary"
-            data-copy-text="기업은행 327-05-1016-01-014 (예금주: AshLight)"
-          >
-            📋 계좌 복사
-          </button>
+          <div class="donation-links">
+            <a
+              href="https://qr.kakaopay.com/FQrDWYNo2"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="donation-link-button"
+            >
+              📱 카카오페이로 바로 후원하기
+            </a>
+          </div>
         </div>
       </div>
 
