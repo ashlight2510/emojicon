@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AshLight Emoji Icon Studio</title>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1204894220949193"
+      crossorigin="anonymous"
+    ></script>
     <style>
       :root {
         --gradient-angle: 135deg;
@@ -932,7 +937,6 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
       const state = {
         emoji: "🚀",
@@ -1146,13 +1150,215 @@
         setActiveTool("iconTool");
       }
 
-      async function renderBaseCanvas() {
-        return await html2canvas(appIcon, {
-          width: 1024,
-          height: 1024,
-          scale: 2,
-          backgroundColor: null,
-        });
+      async function renderIconCanvas(size = 1024) {
+        const baseWidth = appIcon ? appIcon.offsetWidth || 520 : 520;
+        const scale = size / baseWidth;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, size, size);
+
+        const radius = Math.min(size / 2, state.radius * scale);
+
+        const gradientAngle = ((90 - state.angle) * Math.PI) / 180;
+        const diagonal = Math.sqrt(size * size + size * size);
+        const centerX = size / 2;
+        const centerY = size / 2;
+        const x1 = centerX + Math.cos(gradientAngle) * diagonal;
+        const y1 = centerY + Math.sin(gradientAngle) * diagonal;
+        const x0 = centerX - Math.cos(gradientAngle) * diagonal;
+        const y0 = centerY - Math.sin(gradientAngle) * diagonal;
+
+        const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+        gradient.addColorStop(0, state.gradientStart);
+        gradient.addColorStop(1, state.gradientEnd);
+
+        ctx.save();
+        ctx.beginPath();
+        drawRoundedRect(ctx, 0, 0, size, size, radius);
+        ctx.closePath();
+        ctx.clip();
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        const glowStrength = Math.min(state.glow + 0.08, 0.45);
+        const glowGradient = ctx.createRadialGradient(
+          size * 0.3,
+          size * 0.3,
+          0,
+          size * 0.3,
+          size * 0.3,
+          size * 0.6
+        );
+        glowGradient.addColorStop(0, `rgba(255,255,255,${glowStrength})`);
+        glowGradient.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(0, 0, size, size);
+
+        ctx.restore();
+
+        ctx.save();
+        ctx.fillStyle = "#000";
+        ctx.font = `${
+          state.emojiSize * scale
+        }px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',system-ui`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(0,0,0,0.45)";
+        ctx.shadowBlur = 40 * scale;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.fillText(state.emoji, centerX, centerY);
+        ctx.restore();
+
+        return canvas;
+      }
+
+      function drawRoundedRect(ctx, x, y, width, height, radius) {
+        const r = Math.min(radius, width / 2, height / 2);
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + width, y, x + width, y + height, r);
+        ctx.arcTo(x + width, y + height, x, y + height, r);
+        ctx.arcTo(x, y + height, x, y, r);
+        ctx.arcTo(x, y, x + width, y, r);
+      }
+
+      async function renderSplashCanvas(
+        targetWidth = 1242,
+        targetHeight = 2688
+      ) {
+        const previewWidth = splashScreen
+          ? splashScreen.offsetWidth || 372
+          : 372;
+        const scale = targetWidth / previewWidth;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, targetWidth, targetHeight);
+
+        const gradientAngle = ((90 - state.angle) * Math.PI) / 180;
+        const diagonal = Math.sqrt(
+          targetWidth * targetWidth + targetHeight * targetHeight
+        );
+        const centerX = targetWidth / 2;
+        const centerY = targetHeight / 2;
+        const x1 = centerX + Math.cos(gradientAngle) * diagonal;
+        const y1 = centerY + Math.sin(gradientAngle) * diagonal;
+        const x0 = centerX - Math.cos(gradientAngle) * diagonal;
+        const y0 = centerY - Math.sin(gradientAngle) * diagonal;
+
+        const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+        gradient.addColorStop(0, state.gradientStart);
+        gradient.addColorStop(1, state.gradientEnd);
+
+        const cornerRadius = 36 * scale;
+        ctx.save();
+        ctx.beginPath();
+        drawRoundedRect(ctx, 0, 0, targetWidth, targetHeight, cornerRadius);
+        ctx.closePath();
+        ctx.clip();
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+        const overlayGradient = ctx.createRadialGradient(
+          targetWidth * 0.5,
+          targetHeight * 0.38,
+          0,
+          targetWidth * 0.5,
+          targetHeight * 0.38,
+          targetWidth * 0.7
+        );
+        overlayGradient.addColorStop(0, "rgba(255,255,255,0.18)");
+        overlayGradient.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = overlayGradient;
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+        ctx.restore();
+
+        const emojiFontSize = 210 * scale;
+        const titleFontSize = 68 * scale;
+        const subtitleFontSize = 26 * scale;
+        const titleLines = state.splashTitle
+          ? state.splashTitle
+              .split(/\r?\n/)
+              .filter((line) => line.trim().length > 0)
+          : [];
+        const subtitleLines = state.splashSubtitle
+          ? state.splashSubtitle
+              .split(/\r?\n/)
+              .filter((line) => line.trim().length > 0)
+          : [];
+
+        const titleLineHeight = titleFontSize * 1.15;
+        const subtitleLineHeight = subtitleFontSize * 1.2;
+        const spacingAfterEmoji = titleLines.length
+          ? 40 * scale
+          : subtitleLines.length
+          ? 40 * scale
+          : 0;
+        const spacingBetweenTitleSubtitle =
+          titleLines.length && subtitleLines.length ? 20 * scale : 0;
+
+        const totalHeight =
+          emojiFontSize +
+          spacingAfterEmoji +
+          titleLineHeight * titleLines.length +
+          spacingBetweenTitleSubtitle +
+          subtitleLineHeight * subtitleLines.length;
+
+        let currentY = centerY - totalHeight / 2;
+
+        ctx.save();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // Emoji
+        currentY += emojiFontSize / 2;
+        ctx.font = `${emojiFontSize}px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',system-ui`;
+        ctx.shadowColor = "rgba(0,0,0,0.45)";
+        ctx.shadowBlur = 32 * scale;
+        ctx.shadowOffsetY = 18 * scale;
+        ctx.fillText(state.emoji, centerX, currentY);
+        ctx.shadowColor = "transparent";
+        currentY += emojiFontSize / 2;
+
+        // Space after emoji
+        currentY += spacingAfterEmoji;
+
+        // Title lines
+        if (titleLines.length) {
+          ctx.font = `${titleFontSize}px 'Pretendard Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif`;
+          ctx.fillStyle = "white";
+          titleLines.forEach((line) => {
+            currentY += titleLineHeight / 2;
+            ctx.fillText(line, centerX, currentY);
+            currentY += titleLineHeight / 2;
+          });
+        }
+
+        // Space between title and subtitle
+        currentY += spacingBetweenTitleSubtitle;
+
+        // Subtitle lines
+        if (subtitleLines.length) {
+          ctx.font = `${subtitleFontSize}px 'Pretendard Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif`;
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          subtitleLines.forEach((line) => {
+            currentY += subtitleLineHeight / 2;
+            ctx.fillText(line, centerX, currentY);
+            currentY += subtitleLineHeight / 2;
+          });
+        }
+
+        ctx.restore();
+
+        return canvas;
       }
 
       function createScaledCanvas(baseCanvas, size) {
@@ -1256,12 +1462,10 @@
         button.textContent = "⏳ 렌더링 중...";
 
         try {
-          const baseCanvas = await renderBaseCanvas();
-          const targetCanvas = createScaledCanvas(baseCanvas, size);
-
+          const baseCanvas = await renderIconCanvas(size);
           const link = document.createElement("a");
           link.download = filename;
-          link.href = targetCanvas.toDataURL("image/png");
+          link.href = baseCanvas.toDataURL("image/png");
           link.click();
         } catch (error) {
           console.error(error);
@@ -1279,22 +1483,10 @@
         button.textContent = "⏳ 렌더링 중...";
 
         try {
-          const baseCanvas = await html2canvas(splashScreen, {
-            width: 1242,
-            height: 2688,
-            scale: 2,
-            backgroundColor: null,
-          });
-
-          const targetCanvas = document.createElement("canvas");
-          targetCanvas.width = 1242;
-          targetCanvas.height = 2688;
-          const ctx = targetCanvas.getContext("2d");
-          ctx.drawImage(baseCanvas, 0, 0, 1242, 2688);
-
+          const baseCanvas = await renderSplashCanvas(1242, 2688);
           const link = document.createElement("a");
           link.download = "splash-1242x2688.png";
-          link.href = targetCanvas.toDataURL("image/png");
+          link.href = baseCanvas.toDataURL("image/png");
           link.click();
         } catch (error) {
           console.error(error);
@@ -1318,7 +1510,7 @@
         button.textContent = "⏳ 패키징 중...";
 
         try {
-          const baseCanvas = await renderBaseCanvas();
+          const baseCanvas = await renderIconCanvas(1024);
           const zip = new JSZip();
 
           for (const asset of assetPresets) {
