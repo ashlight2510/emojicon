@@ -239,51 +239,12 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
 
-      #app-icon {
+      .icon-preview-img {
         width: 520px;
         height: 520px;
-        border-radius: var(--icon-radius);
-        background: linear-gradient(
-          var(--gradient-angle),
-          var(--gradient-start),
-          var(--gradient-end)
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
+        border-radius: 32px;
         box-shadow: 0 40px 80px rgba(15, 17, 29, 0.8);
-      }
-
-      #app-icon::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-            circle at 30% 30%,
-            rgba(255, 255, 255, var(--glow-opacity)),
-            transparent 50%
-          ),
-          linear-gradient(
-            120deg,
-            rgba(255, 255, 255, 0.14),
-            transparent 40%,
-            transparent 60%,
-            rgba(0, 0, 0, 0.35)
-          );
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-
-      .icon-emoji {
-        font-size: var(--emoji-size);
-        filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.4));
-        z-index: 1;
-        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
-          system-ui, sans-serif;
-        line-height: 1;
-        text-rendering: optimizeLegibility;
+        object-fit: cover;
       }
 
       .mini-previews {
@@ -293,6 +254,7 @@
       }
 
       .mini-card {
+        display: grid;
         background: rgba(255, 255, 255, 0.02);
         border-radius: 18px;
         padding: 18px;
@@ -300,7 +262,7 @@
       }
 
       .mini-card h3 {
-        margin: 0 0 10px;
+        margin: 0 0 16px;
         font-size: 14px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -312,19 +274,17 @@
         height: 140px;
         margin: 0 auto;
         border-radius: 32px;
-        background: linear-gradient(
-          var(--gradient-angle),
-          var(--gradient-start),
-          var(--gradient-end)
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
         box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+        object-fit: cover;
+        display: block;
       }
 
       .mini-icon.circle {
         border-radius: 50%;
+      }
+
+      .mini-icon.square {
+        border-radius: 18px;
       }
 
       .mini-icon .emoji {
@@ -474,92 +434,26 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
 
-      #splash-screen {
+      .splash-preview-img {
         width: 372px;
         height: 804px;
-        background: linear-gradient(
-          var(--gradient-angle),
-          var(--gradient-start),
-          var(--gradient-end)
-        );
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         border-radius: 36px;
-        position: relative;
-        overflow: hidden;
         box-shadow: 0 35px 90px rgba(15, 17, 29, 0.75);
-      }
-
-      #splash-screen::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          circle at 50% 38%,
-          rgba(255, 255, 255, 0.18) 0%,
-          transparent 60%
-        );
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-
-      .splash-emoji {
-        font-size: 210px;
-        margin-bottom: 40px;
-        text-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
-          system-ui, sans-serif;
-        line-height: 1;
-        z-index: 1;
-        animation: float 3.2s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-18px);
-        }
-      }
-
-      .splash-title {
-        font-size: 68px;
-        max-width: 80%;
-        font-weight: 900;
-        color: white;
-        text-align: center;
-        letter-spacing: -2px;
-        line-height: 1.15;
-        text-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
-        z-index: 1;
-        word-break: keep-all;
-        white-space: pre-line;
-      }
-
-      .splash-subtitle {
-        font-size: 26px;
-        max-width: 80%;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.9);
-        text-align: center;
-        margin-top: 20px;
-        text-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
-        letter-spacing: 0.1em;
-        z-index: 1;
-        word-break: keep-all;
-        white-space: pre-line;
+        object-fit: cover;
       }
 
       .splash-preview {
         margin-top: 20px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 14px;
+        justify-content: center;
+      }
+
+      .splash-mini-img {
+        width: 160px;
+        height: 346px;
+        border-radius: 24px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+        object-fit: cover;
       }
 
       .splash-preview .mini {
@@ -779,28 +673,42 @@
 
         <section class="preview-panel">
           <div class="icon-wrap">
-            <div id="app-icon">
-              <span class="icon-emoji" id="mainEmoji">🚀</span>
-            </div>
+            <img
+              id="appIconPreview"
+              class="icon-preview-img"
+              src=""
+              alt="아이콘 미리보기"
+            />
           </div>
           <div class="mini-previews">
             <div class="mini-card">
               <h3>iOS Rounded</h3>
-              <div class="mini-icon">
-                <span class="emoji" data-preview-emoji>🚀</span>
-              </div>
+              <img
+                class="mini-icon"
+                data-icon-preview-size="180"
+                data-icon-shape="rounded"
+                data-icon-radius="36"
+                alt="iOS 미리보기"
+              />
             </div>
             <div class="mini-card">
               <h3>Android Circle</h3>
-              <div class="mini-icon circle">
-                <span class="emoji" data-preview-emoji>🚀</span>
-              </div>
+              <img
+                class="mini-icon circle"
+                data-icon-preview-size="180"
+                data-icon-shape="circle"
+                alt="Android 미리보기"
+              />
             </div>
             <div class="mini-card">
               <h3>Browser Favicon</h3>
-              <div class="mini-icon" style="border-radius: 18px">
-                <span class="emoji" data-preview-emoji>🚀</span>
-              </div>
+              <img
+                class="mini-icon square"
+                data-icon-preview-size="140"
+                data-icon-shape="rounded"
+                data-icon-radius="24"
+                alt="Browser 미리보기"
+              />
             </div>
           </div>
         </section>
@@ -850,21 +758,20 @@
         <section class="splash-panel">
           <h2>AshLight 스플래시 미리보기</h2>
           <div id="splash-canvas-wrap">
-            <div id="splash-screen">
-              <div class="splash-emoji" id="splashEmoji">🚀</div>
-              <div class="splash-title" id="splashTitle">AshLight</div>
-              <div class="splash-subtitle" id="splashSubtitle">
-                EMOJI ICON STUDIO
-              </div>
-            </div>
+            <img
+              id="splashMainPreview"
+              class="splash-preview-img"
+              src=""
+              alt="스플래시 미리보기"
+            />
           </div>
           <div class="splash-preview">
-            <div class="mini">
-              <div class="emoji" data-splash-preview-emoji>🚀</div>
-              <div class="text" data-splash-preview-text>
-                AshLight<span>EMOJI ICON STUDIO</span>
-              </div>
-            </div>
+            <img
+              id="splashMiniPreview"
+              class="splash-mini-img"
+              src=""
+              alt="스플래시 미니 미리보기"
+            />
           </div>
         </section>
       </div>
@@ -894,10 +801,10 @@
       </div>
 
       <div class="meta-card" id="support">
-        <h3>서버 후원 & 유지비</h3>
+        <h3>후원 & 유지비</h3>
         <p>
-          서비스가 마음에 들면 서버 비용과 유지보수를 위한 작은 후원을
-          부탁드려요. 감사합니다!
+          서비스가 마음에 들면 유지보수를 위한 작은 후원을 부탁드려요.
+          감사합니다!
         </p>
         <div class="donation-box">
           <div class="donation-item">
@@ -961,21 +868,9 @@
       const emojiSizeValue = document.getElementById("emojiSizeValue");
       const glowInput = document.getElementById("glowInput");
       const glowValue = document.getElementById("glowValue");
-      const mainEmoji = document.getElementById("mainEmoji");
-      const previewEmojis = document.querySelectorAll("[data-preview-emoji]");
-      const splashEmoji = document.getElementById("splashEmoji");
-      const splashPreviewEmojis = document.querySelectorAll(
-        "[data-splash-preview-emoji]"
-      );
-      const splashScreen = document.getElementById("splash-screen");
-      const splashTitleElement = document.getElementById("splashTitle");
-      const splashSubtitleElement = document.getElementById("splashSubtitle");
       const splashTitleInput = document.getElementById("splashTitleInput");
       const splashSubtitleInput = document.getElementById(
         "splashSubtitleInput"
-      );
-      const splashPreviewTexts = document.querySelectorAll(
-        "[data-splash-preview-text]"
       );
       const downloadSplashButton = document.getElementById(
         "downloadSplashButton"
@@ -983,82 +878,18 @@
       const splashRandomButton = document.getElementById("splashRandomButton");
       const toolButtons = document.querySelectorAll(".nav-button");
       const toolContainers = document.querySelectorAll(".tool-container");
-      const appIcon = document.getElementById("app-icon");
+      const iconPreviewImg = document.getElementById("appIconPreview");
+      const miniIconPreviewImgs = document.querySelectorAll(
+        "[data-icon-preview-size]"
+      );
+      const splashMainPreview = document.getElementById("splashMainPreview");
+      const splashMiniPreview = document.getElementById("splashMiniPreview");
 
-      const setCSSVar = (name, value) =>
-        document.documentElement.style.setProperty(name, value);
-
-      const escapeHtml = (value = "") =>
-        String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-
-      const formatMultiline = (value = "") =>
-        escapeHtml(value).replace(/\r?\n/g, "<br />");
+      const ICON_BASE_SIZE = 520;
+      const SPLASH_BASE_WIDTH = 372;
+      const SPLASH_BASE_HEIGHT = 804;
 
       function applyState() {
-        mainEmoji.textContent = state.emoji;
-        previewEmojis.forEach((el) => (el.textContent = state.emoji));
-        if (splashEmoji) {
-          splashEmoji.textContent = state.emoji;
-        }
-        splashPreviewEmojis.forEach((el) => (el.textContent = state.emoji));
-        const hasTitle =
-          typeof state.splashTitle === "string" &&
-          state.splashTitle.trim().length > 0;
-        const hasSubtitle =
-          typeof state.splashSubtitle === "string" &&
-          state.splashSubtitle.trim().length > 0;
-        const titleHtml = hasTitle ? formatMultiline(state.splashTitle) : "";
-        const subtitleHtml = hasSubtitle
-          ? formatMultiline(state.splashSubtitle)
-          : "";
-        if (splashTitleElement) {
-          if (hasTitle) {
-            splashTitleElement.style.display = "";
-            splashTitleElement.innerHTML = titleHtml;
-          } else {
-            splashTitleElement.style.display = "none";
-            splashTitleElement.innerHTML = "";
-          }
-        }
-        if (splashSubtitleElement) {
-          if (hasSubtitle) {
-            splashSubtitleElement.style.display = "";
-            splashSubtitleElement.style.marginTop = hasTitle ? "" : "0";
-            splashSubtitleElement.innerHTML = subtitleHtml;
-          } else {
-            splashSubtitleElement.style.display = "none";
-            splashSubtitleElement.style.marginTop = "";
-            splashSubtitleElement.innerHTML = "";
-          }
-        }
-        if (splashTitleInput && document.activeElement !== splashTitleInput) {
-          splashTitleInput.value = state.splashTitle;
-        }
-        if (
-          splashSubtitleInput &&
-          document.activeElement !== splashSubtitleInput
-        ) {
-          splashSubtitleInput.value = state.splashSubtitle;
-        }
-        splashPreviewTexts.forEach((el) => {
-          const subtitleBlock = hasSubtitle
-            ? `<span>${subtitleHtml}</span>`
-            : "";
-          el.innerHTML = `${titleHtml}${subtitleBlock}`;
-        });
-
-        setCSSVar("--gradient-start", state.gradientStart);
-        setCSSVar("--gradient-end", state.gradientEnd);
-        setCSSVar("--gradient-angle", `${state.angle}deg`);
-        setCSSVar("--icon-radius", `${state.radius}px`);
-        setCSSVar("--emoji-size", `${state.emojiSize}px`);
-        setCSSVar("--glow-opacity", state.glow);
-
         emojiInput.value = state.emoji;
         colorStartInput.value = state.gradientStart;
         colorEndInput.value = state.gradientEnd;
@@ -1070,6 +901,19 @@
         emojiSizeValue.textContent = state.emojiSize;
         glowInput.value = state.glow;
         glowValue.textContent = state.glow.toFixed(2);
+
+        if (splashTitleInput && document.activeElement !== splashTitleInput) {
+          splashTitleInput.value = state.splashTitle;
+        }
+        if (
+          splashSubtitleInput &&
+          document.activeElement !== splashSubtitleInput
+        ) {
+          splashSubtitleInput.value = state.splashSubtitle;
+        }
+
+        updateIconPreviews();
+        updateSplashPreviews();
       }
 
       function updateFromInputs() {
@@ -1091,21 +935,20 @@
       emojiSizeInput.addEventListener("input", updateFromInputs);
       glowInput.addEventListener("input", updateFromInputs);
 
-      const updateSplashText = () => {
-        if (splashTitleInput) {
-          state.splashTitle = splashTitleInput.value.replace(/\r\n/g, "\n");
-        }
-        if (splashSubtitleInput) {
-          state.splashSubtitle = splashSubtitleInput.value;
-        }
-        applyState();
-      };
-
       if (splashTitleInput) {
-        splashTitleInput.addEventListener("input", updateSplashText);
+        splashTitleInput.addEventListener("input", () => {
+          state.splashTitle = splashTitleInput.value.replace(/\r\n/g, "\n");
+          updateSplashPreviews();
+        });
       }
       if (splashSubtitleInput) {
-        splashSubtitleInput.addEventListener("input", updateSplashText);
+        splashSubtitleInput.addEventListener("input", () => {
+          state.splashSubtitle = splashSubtitleInput.value.replace(
+            /\r\n/g,
+            "\n"
+          );
+          updateSplashPreviews();
+        });
       }
 
       function setActiveTool(targetId) {
@@ -1150,9 +993,66 @@
         setActiveTool("iconTool");
       }
 
+      let iconPreviewToken = 0;
+      async function updateIconPreviews() {
+        const token = ++iconPreviewToken;
+        const canvas = await renderIconCanvas(ICON_BASE_SIZE);
+        if (token !== iconPreviewToken) return;
+        const dataUrl = canvas.toDataURL("image/png");
+        if (iconPreviewImg) {
+          iconPreviewImg.src = dataUrl;
+        }
+        miniIconPreviewImgs.forEach((img) => {
+          const size = Number(img.dataset.iconPreviewSize) || 140;
+          const shape = img.dataset.iconShape || "rounded";
+          const radius = Number(img.dataset.iconRadius) || size / 2;
+          const miniCanvas = document.createElement("canvas");
+          miniCanvas.width = size;
+          miniCanvas.height = size;
+          const ctx = miniCanvas.getContext("2d");
+          ctx.clearRect(0, 0, size, size);
+          ctx.save();
+          if (shape === "circle") {
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
+          } else if (shape === "rounded") {
+            ctx.beginPath();
+            drawRoundedRect(ctx, 0, 0, size, size, radius);
+            ctx.closePath();
+            ctx.clip();
+          }
+          ctx.drawImage(canvas, 0, 0, size, size);
+          ctx.restore();
+          img.src = miniCanvas.toDataURL("image/png");
+        });
+      }
+
+      let splashPreviewToken = 0;
+      async function updateSplashPreviews() {
+        const token = ++splashPreviewToken;
+        const mainCanvas = await renderSplashCanvas(
+          SPLASH_BASE_WIDTH,
+          SPLASH_BASE_HEIGHT
+        );
+        if (token !== splashPreviewToken) return;
+        const mainUrl = mainCanvas.toDataURL("image/png");
+        if (splashMainPreview) {
+          splashMainPreview.src = mainUrl;
+        }
+        if (splashMiniPreview) {
+          const miniCanvas = document.createElement("canvas");
+          miniCanvas.width = 160;
+          miniCanvas.height = 346;
+          const ctx = miniCanvas.getContext("2d");
+          ctx.drawImage(mainCanvas, 0, 0, 160, 346);
+          splashMiniPreview.src = miniCanvas.toDataURL("image/png");
+        }
+      }
+
       async function renderIconCanvas(size = 1024) {
-        const baseWidth = appIcon ? appIcon.offsetWidth || 520 : 520;
-        const scale = size / baseWidth;
+        const scale = size / ICON_BASE_SIZE;
 
         const canvas = document.createElement("canvas");
         canvas.width = size;
@@ -1206,12 +1106,16 @@
           state.emojiSize * scale
         }px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',system-ui`;
         ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        ctx.textBaseline = "alphabetic";
         ctx.shadowColor = "rgba(0,0,0,0.45)";
         ctx.shadowBlur = 40 * scale;
         ctx.shadowOffsetY = 0;
         ctx.shadowOffsetX = 0;
-        ctx.fillText(state.emoji, centerX, centerY);
+        const metrics = ctx.measureText(state.emoji);
+        const offsetY =
+          (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
+          2;
+        ctx.fillText(state.emoji, centerX, centerY + offsetY);
         ctx.restore();
 
         return canvas;
@@ -1230,10 +1134,7 @@
         targetWidth = 1242,
         targetHeight = 2688
       ) {
-        const previewWidth = splashScreen
-          ? splashScreen.offsetWidth || 372
-          : 372;
-        const scale = targetWidth / previewWidth;
+        const scale = targetWidth / SPLASH_BASE_WIDTH;
 
         const canvas = document.createElement("canvas");
         canvas.width = targetWidth;
@@ -1477,7 +1378,7 @@
       }
 
       async function downloadSplash(button) {
-        if (!splashScreen) return;
+        if (!splashMainPreview) return;
         button.disabled = true;
         const originalText = button.textContent;
         button.textContent = "⏳ 렌더링 중...";
