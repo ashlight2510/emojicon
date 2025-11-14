@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Emoji Icon Builder</title>
+    <title>AshLight Emoji Icon Studio</title>
     <style>
       :root {
         --gradient-angle: 135deg;
         --gradient-start: #ff8a00;
         --gradient-end: #e52e71;
         --icon-radius: 220px;
-        --emoji-size: 520px;
-        --glow-opacity: 0.26;
+        --emoji-size: 420px;
+        --glow-opacity: 0.22;
       }
 
       * {
@@ -41,6 +41,62 @@
       .hero {
         max-width: 1400px;
         margin: 0 auto 24px;
+      }
+
+      .hero .gratitude {
+        margin-top: 18px;
+        font-size: 14px;
+        color: rgba(244, 246, 251, 0.7);
+      }
+
+      .nav-tabs {
+        display: inline-flex;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 999px;
+        padding: 6px;
+        margin: 18px 0 28px;
+      }
+
+      .nav-button {
+        border: none;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        letter-spacing: 0.04em;
+      }
+
+      .nav-button.active {
+        background: linear-gradient(135deg, #7f5af0, #00d1ff);
+        color: white;
+        box-shadow: 0 10px 25px rgba(127, 90, 240, 0.4);
+      }
+
+      .tool-container {
+        display: none;
+        margin-bottom: 48px;
+      }
+
+      .tool-container.active {
+        display: block;
+        animation: fadeIn 0.4s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       main {
@@ -207,8 +263,12 @@
 
       .icon-emoji {
         font-size: var(--emoji-size);
-        filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+        filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.4));
         z-index: 1;
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+          system-ui, sans-serif;
+        line-height: 1;
+        text-rendering: optimizeLegibility;
       }
 
       .mini-previews {
@@ -357,24 +417,155 @@
         color: rgba(255, 255, 255, 0.86);
       }
 
-      .ad-slot {
-        height: 160px;
-        border-radius: 18px;
-        background: repeating-linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.06),
-          rgba(255, 255, 255, 0.06) 12px,
-          rgba(255, 255, 255, 0.02) 12px,
-          rgba(255, 255, 255, 0.02) 24px
+      .splash-grid {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 24px;
+      }
+
+      .splash-panel {
+        background: #10111c;
+        border-radius: 24px;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+      }
+
+      .splash-panel h2 {
+        margin: 0 0 14px;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      #splash-canvas-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 32px;
+        background: radial-gradient(
+          circle at 45% 0%,
+          rgba(255, 255, 255, 0.05),
+          transparent 60%
+        );
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      #splash-screen {
+        width: 372px;
+        height: 804px;
+        background: linear-gradient(
+          var(--gradient-angle),
+          var(--gradient-start),
+          var(--gradient-end)
         );
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: 13px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.45);
-        border: 1px dashed rgba(255, 255, 255, 0.12);
+        border-radius: 36px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 35px 90px rgba(15, 17, 29, 0.75);
+      }
+
+      #splash-screen::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 50% 38%,
+          rgba(255, 255, 255, 0.18) 0%,
+          transparent 60%
+        );
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      .splash-emoji {
+        font-size: 210px;
+        margin-bottom: 40px;
+        text-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+          system-ui, sans-serif;
+        line-height: 1;
+        z-index: 1;
+        animation: float 3.2s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-18px);
+        }
+      }
+
+      .splash-title {
+        font-size: 78px;
+        font-weight: 900;
+        color: white;
+        text-align: center;
+        letter-spacing: -4px;
+        line-height: 1.15;
+        text-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+        z-index: 1;
+      }
+
+      .splash-subtitle {
+        font-size: 32px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        text-align: center;
+        margin-top: 26px;
+        text-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+        letter-spacing: 0.12em;
+        z-index: 1;
+      }
+
+      .splash-preview {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .splash-preview .mini {
+        width: 160px;
+        height: 346px;
+        border-radius: 24px;
+        background: linear-gradient(
+          var(--gradient-angle),
+          var(--gradient-start),
+          var(--gradient-end)
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+      }
+
+      .splash-preview .mini .emoji {
+        font-size: 68px;
+      }
+
+      .splash-preview .mini .text {
+        font-size: 24px;
+        font-weight: 800;
+        text-align: center;
+        color: white;
+        margin-top: 12px;
+        line-height: 1.2;
+      }
+
+      .ad-slot {
+        display: none;
       }
 
       footer {
@@ -395,160 +586,237 @@
           max-width: 520px;
           max-height: 520px;
         }
+        .splash-grid {
+          grid-template-columns: 1fr;
+        }
+        #splash-canvas-wrap {
+          padding: 24px;
+        }
+        #splash-screen {
+          transform: scale(0.88);
+        }
       }
     </style>
   </head>
   <body>
     <header class="hero">
-      <h1>⚡️ 수능브레이커 이모지 아이콘 스튜디오</h1>
+      <h1>⚡️ AshLight 이모지 아이콘 스튜디오</h1>
       <p class="description">
         이모지를 한 글자만 넣으면 아이콘, 파비콘, 앱스토어용 이미지까지 한 번에
-        뽑아주는 서비스입니다. 컬러를 고르고, 랜덤 프리셋으로 영감도 얻고,
-        다운로드만 누르면 곧바로 배포 준비 완료!
+        뽑아주는 AshLight 제작 툴입니다. 컬러를 고르고, 랜덤 프리셋으로 영감도
+        얻고, 다운로드만 누르면 곧바로 배포 준비 완료!
       </p>
       <div class="status-row">
         <span class="chip">BETA</span>
         <a href="#guide">빠른 시작 가이드</a>
         <a href="#support">서버 후원하기</a>
       </div>
+      <p class="gratitude">
+        사용해주셔서 감사합니다. 좋은 하루 보내시고, 멋진 서비스를 만드는데 이
+        툴이 작은 도움이 되길 바랍니다!
+      </p>
+      <div class="nav-tabs">
+        <button class="nav-button active" data-tool-target="iconTool">
+          🪄 아이콘 스튜디오
+        </button>
+        <button class="nav-button" data-tool-target="splashTool">
+          🌅 스플래시 스튜디오
+        </button>
+      </div>
     </header>
 
-    <main>
-      <section class="panel">
-        <h2>아이콘 컨트롤</h2>
+    <div class="tool-container active" id="iconTool">
+      <main>
+        <section class="panel">
+          <h2>아이콘 컨트롤</h2>
 
-        <div class="form-group">
-          <label for="emojiInput">아이콘 이모지</label>
-          <input
-            id="emojiInput"
-            type="text"
-            maxlength="2"
-            value="🚀"
-            autocomplete="off"
-          />
-        </div>
-
-        <div class="form-group split">
-          <div>
-            <label for="colorStart">그라데이션 시작</label>
-            <input type="color" id="colorStart" value="#ff8a00" />
+          <div class="form-group">
+            <label for="emojiInput">아이콘 이모지</label>
+            <input
+              id="emojiInput"
+              type="text"
+              maxlength="2"
+              value="🚀"
+              autocomplete="off"
+            />
           </div>
-          <div>
-            <label for="colorEnd">그라데이션 끝</label>
-            <input type="color" id="colorEnd" value="#e52e71" />
-          </div>
-        </div>
 
-        <div class="form-group">
-          <label for="angleInput"
-            >그라데이션 각도 (<span id="angleValue">135</span>°)</label
-          >
-          <input type="range" id="angleInput" min="0" max="360" value="135" />
-        </div>
-
-        <div class="form-group">
-          <label for="radiusInput"
-            >모서리 라운드 (<span id="radiusValue">220</span>px)</label
-          >
-          <input type="range" id="radiusInput" min="0" max="260" value="220" />
-        </div>
-
-        <div class="form-group">
-          <label for="emojiSizeInput"
-            >이모지 크기 (<span id="emojiSizeValue">520</span>px)</label
-          >
-          <input
-            type="range"
-            id="emojiSizeInput"
-            min="200"
-            max="620"
-            value="520"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="glowInput"
-            >글로우 강도 (<span id="glowValue">0.26</span>)</label
-          >
-          <input
-            type="range"
-            step="0.01"
-            min="0"
-            max="0.6"
-            value="0.26"
-            id="glowInput"
-          />
-        </div>
-
-        <div class="button-row">
-          <button class="secondary" id="randomButton">🎲 랜덤 조합</button>
-          <button class="secondary" id="copyConfigButton">📋 설정 복사</button>
-        </div>
-
-        <hr style="margin: 26px 0; border-color: rgba(255, 255, 255, 0.05)" />
-
-        <h2>내보내기</h2>
-        <div class="button-row">
-          <button
-            class="primary"
-            data-download-size="1024"
-            data-filename="icon-ios-1024.png"
-          >
-            🍎 iOS 아이콘 (1024px)
-          </button>
-          <button
-            class="primary"
-            data-download-size="512"
-            data-filename="icon-android-512.png"
-          >
-            🤖 Android 아이콘 (512px)
-          </button>
-          <button
-            class="primary"
-            data-download-size="192"
-            data-filename="favicon-192.png"
-          >
-            🌐 Favicon/Web (192px)
-          </button>
-          <button class="accent" id="downloadAllButton">
-            📦 전체 자산 ZIP
-          </button>
-        </div>
-        <p class="helper">
-          Expo / React Native 에서는 <code>assets/icon.png</code> 로 저장 후
-          <code>app.json</code> 의 <code>expo.icon</code> 을 해당 경로로
-          지정하세요.
-        </p>
-      </section>
-
-      <section class="preview-panel">
-        <div class="icon-wrap">
-          <div id="app-icon">
-            <span class="icon-emoji" id="mainEmoji">🚀</span>
-          </div>
-        </div>
-        <div class="mini-previews">
-          <div class="mini-card">
-            <h3>iOS Rounded</h3>
-            <div class="mini-icon">
-              <span class="emoji" data-preview-emoji>🚀</span>
+          <div class="form-group split">
+            <div>
+              <label for="colorStart">그라데이션 시작</label>
+              <input type="color" id="colorStart" value="#ff8a00" />
+            </div>
+            <div>
+              <label for="colorEnd">그라데이션 끝</label>
+              <input type="color" id="colorEnd" value="#e52e71" />
             </div>
           </div>
-          <div class="mini-card">
-            <h3>Android Circle</h3>
-            <div class="mini-icon circle">
-              <span class="emoji" data-preview-emoji>🚀</span>
+
+          <div class="form-group">
+            <label for="angleInput"
+              >그라데이션 각도 (<span id="angleValue">135</span>°)</label
+            >
+            <input type="range" id="angleInput" min="0" max="360" value="135" />
+          </div>
+
+          <div class="form-group">
+            <label for="radiusInput"
+              >모서리 라운드 (<span id="radiusValue">220</span>px)</label
+            >
+            <input
+              type="range"
+              id="radiusInput"
+              min="0"
+              max="260"
+              value="220"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="emojiSizeInput"
+              >이모지 크기 (<span id="emojiSizeValue">420</span>px)</label
+            >
+            <input
+              type="range"
+              id="emojiSizeInput"
+              min="260"
+              max="520"
+              value="420"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="glowInput"
+              >글로우 강도 (<span id="glowValue">0.22</span>)</label
+            >
+            <input
+              type="range"
+              step="0.01"
+              min="0"
+              max="0.6"
+              value="0.22"
+              id="glowInput"
+            />
+          </div>
+
+          <div class="button-row">
+            <button class="secondary" id="randomButton">🎲 랜덤 조합</button>
+            <button class="secondary" id="copyConfigButton">
+              📋 설정 복사
+            </button>
+          </div>
+
+          <hr style="margin: 26px 0; border-color: rgba(255, 255, 255, 0.05)" />
+
+          <h2>내보내기</h2>
+          <div class="button-row">
+            <button
+              class="primary"
+              data-download-size="1024"
+              data-filename="icon-ios-1024.png"
+            >
+              🍎 iOS 아이콘 (1024px)
+            </button>
+            <button
+              class="primary"
+              data-download-size="512"
+              data-filename="icon-android-512.png"
+            >
+              🤖 Android 아이콘 (512px)
+            </button>
+            <button
+              class="primary"
+              data-download-size="192"
+              data-filename="favicon-192.png"
+            >
+              🌐 Favicon/Web (192px)
+            </button>
+            <button class="accent" id="downloadAllButton">
+              📦 전체 자산 ZIP
+            </button>
+          </div>
+          <p class="helper">
+            Expo / React Native 에서는 <code>assets/icon.png</code> 로 저장 후
+            <code>app.json</code> 의 <code>expo.icon</code> 을 해당 경로로
+            지정하세요.
+          </p>
+        </section>
+
+        <section class="preview-panel">
+          <div class="icon-wrap">
+            <div id="app-icon">
+              <span class="icon-emoji" id="mainEmoji">🚀</span>
             </div>
           </div>
-          <div class="mini-card">
-            <h3>Browser Favicon</h3>
-            <div class="mini-icon" style="border-radius: 18px">
-              <span class="emoji" data-preview-emoji>🚀</span>
+          <div class="mini-previews">
+            <div class="mini-card">
+              <h3>iOS Rounded</h3>
+              <div class="mini-icon">
+                <span class="emoji" data-preview-emoji>🚀</span>
+              </div>
+            </div>
+            <div class="mini-card">
+              <h3>Android Circle</h3>
+              <div class="mini-icon circle">
+                <span class="emoji" data-preview-emoji>🚀</span>
+              </div>
+            </div>
+            <div class="mini-card">
+              <h3>Browser Favicon</h3>
+              <div class="mini-icon" style="border-radius: 18px">
+                <span class="emoji" data-preview-emoji>🚀</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </div>
+
+    <div class="tool-container" id="splashTool">
+      <div class="splash-grid">
+        <section class="splash-panel">
+          <h2>스플래시 빠른 제작 가이드</h2>
+          <p>
+            아이콘과 동일한 이모지와 그라데이션으로 스플래시 이미지를 자동으로
+            만들어줍니다. Expo / React Native / Flutter 등에서 그대로 사용할 수
+            있는 1242 × 2688 (iPhone 14 Pro 해상도) PNG를 다운로드하세요.
+          </p>
+          <ul style="margin: 18px 0; padding-left: 20px">
+            <li>① 아이콘 탭에서 원하는 이모지·컬러를 완성합니다.</li>
+            <li>② 스플래시 탭으로 전환해 미리보기를 확인합니다.</li>
+            <li>③ 아래 다운로드 버튼으로 전체 해상도를 저장합니다.</li>
+          </ul>
+          <div class="button-row">
+            <button class="primary" id="downloadSplashButton">
+              🌅 스플래시 PNG (1242 × 2688)
+            </button>
+          </div>
+          <p class="helper" style="margin-top: 18px">
+            생성된 이미지는 <code>assets/splash.png</code> 등 원하는 경로에
+            저장한 뒤 <code>app.json</code> 또는 네이티브 프로젝트 설정에
+            반영해주세요.
+          </p>
+        </section>
+        <section class="splash-panel">
+          <h2>AshLight 스플래시 미리보기</h2>
+          <div id="splash-canvas-wrap">
+            <div id="splash-screen">
+              <div class="splash-emoji" id="splashEmoji">🚀</div>
+              <div class="splash-title" id="splashTitle">AshLight</div>
+              <div class="splash-subtitle" id="splashSubtitle">
+                EMOJI ICON STUDIO
+              </div>
+            </div>
+          </div>
+          <div class="splash-preview">
+            <div class="mini">
+              <div class="emoji" data-splash-preview-emoji>🚀</div>
+              <div class="text">AshLight<br />Studio</div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
 
     <section class="meta-section" id="guide">
       <div class="meta-card">
@@ -564,8 +832,7 @@
             ③ iOS / Android / Web 버튼을 눌러 각각 필요한 사이즈를 저장하세요.
           </li>
           <li>
-            ④ `전체 자산 ZIP` 버튼으로 파비콘 포함 세트를 한 번에 내려받을 수
-            있어요.
+            ④ `스플래시 스튜디오` 탭에서 동일한 스타일의 스플래시 PNG도 저장.
           </li>
         </ul>
         <p style="margin-top: 16px">
@@ -578,50 +845,44 @@
         <h3>서버 후원 & 유지비</h3>
         <p>
           서비스가 마음에 들면 서버 비용과 유지보수를 위한 작은 후원을
-          부탁드려요. 아래 계좌 또는 후원 링크는 예시이니 운영 환경에 맞게
-          수정하면 됩니다.
+          부탁드려요. 아래 기업은행 계좌 정보는 예시이니 실제 운영자 정보에 맞게
+          조정해 사용하면 됩니다.
         </p>
         <div class="donation-box">
           <div class="donation-item">
-            <span>카카오뱅크</span>
-            <code>3333-00-0000000</code>
-          </div>
-          <div class="donation-item">
-            <span>토스뱅크</span>
-            <code>1000-0000-0000</code>
+            <span>기업은행</span>
+            <code>327-05-1016-01-014</code>
           </div>
         </div>
         <div class="button-row" style="margin-top: 16px">
           <button
             class="secondary"
-            data-copy-text="카카오뱅크 3333-00-0000000 (예금주: 홍길동)"
+            data-copy-text="기업은행 327-05-1016-01-014 (예금주: AshLight)"
           >
             📋 계좌 복사
-          </button>
-          <button class="secondary" data-copy-text="https://toss.me/emoji-icon">
-            ☕️ 링크 복사
           </button>
         </div>
       </div>
 
       <div class="meta-card">
-        <h3>광고 / 공지 영역</h3>
+        <h3>AshLight 광고 / 공지 영역</h3>
         <p>
-          Google AdSense, 카카오 애드핏 등의 스크립트를 붙여 수익화하거나 출시
-          노트를 띄울 수 있는 공간입니다. 광고 스크립트 로딩 전까지는 아래
-          플레이스홀더가 보여집니다.
+          Google AdSense, 카카오 애드핏 등 스크립트를 붙여 수익화하거나 출시
+          노트를 띄울 수 있는 공간입니다. 기본값으로는 플레이스홀더가 숨겨져
+          있으며, 광고 스크립트를 넣을 때만 활성화하면 됩니다.
         </p>
         <div class="ad-slot">광고 300 × 250</div>
         <p style="margin-top: 16px">
           광고를 붙일 때는 로딩 속도를 고려해 `lazyload` 속성이나 사용자
-          인터랙션 이후에 스크립트를 주입하는 방식도 추천합니다.
+          인터랙션 이후에 스크립트를 주입하는 방식을 추천합니다. `.ad-slot` 의
+          `display:none` 을 해제하면 플레이스홀더가 다시 나타납니다.
         </p>
       </div>
     </section>
 
     <footer>
-      © 2025 수능브레이커 Emoji Icon Studio · 이 페이지는 정적 호스팅만으로도
-      충분히 서비스할 수 있도록 설계되었습니다.
+      © 2025 AshLight Emoji Icon Studio · 이 페이지는 정적 호스팅만으로도 충분히
+      서비스할 수 있도록 설계되었습니다.
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -633,8 +894,8 @@
         gradientEnd: "#e52e71",
         angle: 135,
         radius: 220,
-        emojiSize: 520,
-        glow: 0.26,
+        emojiSize: 420,
+        glow: 0.22,
       };
 
       const emojiInput = document.getElementById("emojiInput");
@@ -650,6 +911,16 @@
       const glowValue = document.getElementById("glowValue");
       const mainEmoji = document.getElementById("mainEmoji");
       const previewEmojis = document.querySelectorAll("[data-preview-emoji]");
+      const splashEmoji = document.getElementById("splashEmoji");
+      const splashPreviewEmojis = document.querySelectorAll(
+        "[data-splash-preview-emoji]"
+      );
+      const splashScreen = document.getElementById("splash-screen");
+      const downloadSplashButton = document.getElementById(
+        "downloadSplashButton"
+      );
+      const toolButtons = document.querySelectorAll(".nav-button");
+      const toolContainers = document.querySelectorAll(".tool-container");
       const appIcon = document.getElementById("app-icon");
 
       const setCSSVar = (name, value) =>
@@ -658,6 +929,10 @@
       function applyState() {
         mainEmoji.textContent = state.emoji;
         previewEmojis.forEach((el) => (el.textContent = state.emoji));
+        if (splashEmoji) {
+          splashEmoji.textContent = state.emoji;
+        }
+        splashPreviewEmojis.forEach((el) => (el.textContent = state.emoji));
 
         setCSSVar("--gradient-start", state.gradientStart);
         setCSSVar("--gradient-end", state.gradientEnd);
@@ -697,6 +972,48 @@
       radiusInput.addEventListener("input", updateFromInputs);
       emojiSizeInput.addEventListener("input", updateFromInputs);
       glowInput.addEventListener("input", updateFromInputs);
+
+      function setActiveTool(targetId) {
+        toolButtons.forEach((button) => {
+          const isActive = button.dataset.toolTarget === targetId;
+          button.classList.toggle("active", isActive);
+        });
+        toolContainers.forEach((container) => {
+          const isActive = container.id === targetId;
+          container.classList.toggle("active", isActive);
+        });
+
+        if (typeof history.replaceState === "function") {
+          try {
+            if (targetId === "splashTool") {
+              history.replaceState(null, "", "#splash");
+            } else {
+              history.replaceState(
+                null,
+                "",
+                window.location.href.split("#")[0]
+              );
+            }
+          } catch (error) {
+            console.warn("해시 업데이트를 건너뜁니다.", error);
+          }
+        }
+      }
+
+      toolButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const targetId = button.dataset.toolTarget;
+          if (!targetId) return;
+          setActiveTool(targetId);
+        });
+      });
+
+      const initialHash = window.location.hash.replace("#", "");
+      if (initialHash === "splash" || initialHash === "splashTool") {
+        setActiveTool("splashTool");
+      } else {
+        setActiveTool("iconTool");
+      }
 
       async function renderBaseCanvas() {
         return await html2canvas(appIcon, {
@@ -744,9 +1061,9 @@
         state.gradientStart = randomItem.start;
         state.gradientEnd = randomItem.end;
         state.angle = Math.floor(Math.random() * 360);
-        state.radius = 160 + Math.floor(Math.random() * 80);
-        state.emojiSize = 420 + Math.floor(Math.random() * 160);
-        state.glow = 0.15 + Math.random() * 0.25;
+        state.radius = 160 + Math.floor(Math.random() * 70);
+        state.emojiSize = 320 + Math.floor(Math.random() * 160);
+        state.glow = 0.12 + Math.random() * 0.18;
         applyState();
       });
 
@@ -778,6 +1095,39 @@
         } catch (error) {
           console.error(error);
           alert("내보내는 중 오류가 발생했습니다.");
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      async function downloadSplash(button) {
+        if (!splashScreen) return;
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = "⏳ 렌더링 중...";
+
+        try {
+          const baseCanvas = await html2canvas(splashScreen, {
+            width: 1242,
+            height: 2688,
+            scale: 2,
+            backgroundColor: null,
+          });
+
+          const targetCanvas = document.createElement("canvas");
+          targetCanvas.width = 1242;
+          targetCanvas.height = 2688;
+          const ctx = targetCanvas.getContext("2d");
+          ctx.drawImage(baseCanvas, 0, 0, 1242, 2688);
+
+          const link = document.createElement("a");
+          link.download = "splash-1242x2688.png";
+          link.href = targetCanvas.toDataURL("image/png");
+          link.click();
+        } catch (error) {
+          console.error(error);
+          alert("스플래시를 만드는 중 오류가 발생했습니다.");
         } finally {
           button.disabled = false;
           button.textContent = originalText;
@@ -836,6 +1186,12 @@
       if (downloadAllButton) {
         downloadAllButton.addEventListener("click", () =>
           downloadAllAssets(downloadAllButton)
+        );
+      }
+
+      if (downloadSplashButton) {
+        downloadSplashButton.addEventListener("click", () =>
+          downloadSplash(downloadSplashButton)
         );
       }
 
