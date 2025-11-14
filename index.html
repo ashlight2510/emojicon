@@ -173,6 +173,16 @@
         margin-top: 10px;
       }
 
+      .inline-input {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .inline-input input[type="number"] {
+        flex: 1;
+      }
+
       button {
         border: none;
         border-radius: 12px;
@@ -334,6 +344,12 @@
         font-size: 13px;
         line-height: 1.5;
         color: rgba(255, 255, 255, 0.65);
+      }
+
+      .form-hint {
+        margin-top: 6px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
       }
 
       code {
@@ -506,25 +522,31 @@
       }
 
       .splash-title {
-        font-size: 78px;
+        font-size: 68px;
+        max-width: 80%;
         font-weight: 900;
         color: white;
         text-align: center;
-        letter-spacing: -4px;
+        letter-spacing: -2px;
         line-height: 1.15;
         text-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
         z-index: 1;
+        word-break: keep-all;
+        white-space: pre-line;
       }
 
       .splash-subtitle {
-        font-size: 32px;
+        font-size: 26px;
+        max-width: 80%;
         font-weight: 600;
         color: rgba(255, 255, 255, 0.9);
         text-align: center;
-        margin-top: 26px;
+        margin-top: 20px;
         text-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         z-index: 1;
+        word-break: keep-all;
+        white-space: pre-line;
       }
 
       .splash-preview {
@@ -556,7 +578,7 @@
       }
 
       .splash-preview .mini .text {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 800;
         text-align: center;
         color: white;
@@ -566,7 +588,7 @@
 
       .splash-preview .mini .text span {
         display: block;
-        font-size: 16px;
+        font-size: 14px;
         letter-spacing: 0.08em;
         margin-top: 6px;
         opacity: 0.8;
@@ -810,6 +832,9 @@
             <button class="primary" id="downloadSplashButton">
               🌅 스플래시 PNG (1242 × 2688)
             </button>
+            <button class="secondary" id="splashRandomButton">
+              🎲 스플래시 문구 랜덤
+            </button>
           </div>
           <p class="helper" style="margin-top: 18px">
             생성된 이미지는 <code>assets/splash.png</code> 등 원하는 경로에
@@ -951,6 +976,7 @@
       const downloadSplashButton = document.getElementById(
         "downloadSplashButton"
       );
+      const splashRandomButton = document.getElementById("splashRandomButton");
       const toolButtons = document.querySelectorAll(".nav-button");
       const toolContainers = document.querySelectorAll(".tool-container");
       const appIcon = document.getElementById("app-icon");
@@ -1159,6 +1185,19 @@
         { start: "#43cea2", end: "#185a9d", emoji: "🌿" },
       ];
 
+      const randomSplashTexts = [
+        { title: "AshLight", subtitle: "EMOJI ICON STUDIO" },
+        {
+          title: "새로운 아이디어\n시작은 간단하게",
+          subtitle: "BUILD FAST, SHIP FASTER",
+        },
+        { title: "Launch Day", subtitle: "READY TO WOW USERS" },
+        { title: "Design Once", subtitle: "ALL PLATFORMS, ONE EMOJI" },
+        { title: "🚀 &nbsp;Rapid Icons", subtitle: "CRAFTED WITH LOVE" },
+        { title: "컬러만 골라주세요", subtitle: "아이콘/스플래시 자동 생성" },
+        { title: "AshLight Studio", subtitle: "BRING YOUR IDEA TO LIGHT" },
+      ];
+
       document.getElementById("randomButton").addEventListener("click", () => {
         const randomItem =
           randomPalettes[Math.floor(Math.random() * randomPalettes.length)];
@@ -1171,6 +1210,25 @@
         state.glow = 0.12 + Math.random() * 0.18;
         applyState();
       });
+
+      const randomizeSplashTexts = () => {
+        const randomPreset =
+          randomSplashTexts[
+            Math.floor(Math.random() * randomSplashTexts.length)
+          ];
+        state.splashTitle = randomPreset.title;
+        state.splashSubtitle = randomPreset.subtitle;
+        applyState();
+        if (
+          !document.getElementById("splashTool").classList.contains("active")
+        ) {
+          setActiveTool("splashTool");
+        }
+      };
+
+      if (splashRandomButton) {
+        splashRandomButton.addEventListener("click", randomizeSplashTexts);
+      }
 
       document
         .getElementById("copyConfigButton")
