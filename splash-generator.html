@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emoji Splash Builder</title>
+    <style>
+      :root {
+        --splash-gradient-start: #7f5af0;
+        --splash-gradient-end: #2b2d77;
+        --splash-gradient-angle: 145deg;
+        --splash-text-color: #fff;
+        --title-size: 96px;
+        --subtitle-size: 32px;
+        --title-spacing: -4px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 32px;
+        font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: #05050b;
+        color: #f5f6ff;
+        min-height: 100vh;
+      }
+
+      header {
+        max-width: 1400px;
+        margin: 0 auto 24px;
+      }
+
+      h1 {
+        margin: 0 0 6px;
+        font-size: 32px;
+      }
+
+      p.description {
+        margin: 0;
+        color: rgba(245, 246, 255, 0.8);
+      }
+
+      main {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 24px;
+      }
+
+      .panel {
+        background: #0d0f1c;
+        border-radius: 24px;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .panel h2 {
+        margin: 0 0 16px;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 18px;
+      }
+
+      label {
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.65);
+        margin-bottom: 8px;
+      }
+
+      input[type="text"],
+      textarea {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        color: #f5f6ff;
+        font-size: 16px;
+        padding: 12px 14px;
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      input[type="color"] {
+        width: 100%;
+        height: 46px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: transparent;
+        padding: 3px;
+      }
+
+      input[type="range"] {
+        width: 100%;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        color: #fff;
+      }
+
+      button.primary {
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+      }
+
+      button.secondary {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .preview-area {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .device-frame {
+        width: 420px;
+        margin: 0 auto;
+        padding: 18px 16px;
+        border-radius: 48px;
+        background: linear-gradient(145deg, #1d2037, #080913);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      #splash-screen {
+        width: 414px;
+        height: 896px;
+        border-radius: 42px;
+        background: linear-gradient(
+          var(--splash-gradient-angle),
+          var(--splash-gradient-start),
+          var(--splash-gradient-end)
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        position: relative;
+        overflow: hidden;
+        color: var(--splash-text-color);
+      }
+
+      #splash-screen::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 50% 25%,
+          rgba(255, 255, 255, 0.18),
+          transparent 45%
+        );
+        pointer-events: none;
+      }
+
+      .splash-emoji {
+        font-size: 160px;
+        text-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        animation: float 4s ease-in-out infinite;
+        z-index: 1;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-14px);
+        }
+      }
+
+      .splash-title {
+        font-size: var(--title-size);
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: var(--title-spacing);
+        line-height: 1;
+        z-index: 1;
+      }
+
+      .splash-title span {
+        display: block;
+      }
+
+      .splash-subtitle {
+        font-size: var(--subtitle-size);
+        font-weight: 600;
+        letter-spacing: 0.4em;
+        text-transform: uppercase;
+        z-index: 1;
+      }
+
+      .mockups {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .mockup-card {
+        border-radius: 20px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .mockup-card h3 {
+        margin: 0 0 12px;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .mini-phone {
+        width: 180px;
+        height: 360px;
+        margin: 0 auto;
+        border-radius: 28px;
+        background: linear-gradient(
+          var(--splash-gradient-angle),
+          var(--splash-gradient-start),
+          var(--splash-gradient-end)
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        color: var(--splash-text-color);
+      }
+
+      .mini-phone .emoji {
+        font-size: 64px;
+      }
+
+      .mini-phone .title {
+        font-size: 36px;
+        font-weight: 800;
+        text-align: center;
+        line-height: 1.1;
+      }
+
+      .mini-phone .subtitle {
+        font-size: 14px;
+        letter-spacing: 0.3em;
+      }
+
+      .helper {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.6;
+        margin-top: 18px;
+      }
+
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 4px 8px;
+        border-radius: 6px;
+      }
+
+      @media (max-width: 1100px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+        .device-frame {
+          width: 92vw;
+        }
+        #splash-screen {
+          width: 100%;
+          height: calc(100% * 896 / 414);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>🚀 Emoji Splash Builder</h1>
+      <p class="description">
+        앱이 켜지는 찰나에 브랜드 인상을 꽂아 넣는 스플래시를 바로 만들고 1242x2688
+        사이즈로 다운로드하세요.
+      </p>
+    </header>
+
+    <main>
+      <section class="panel">
+        <h2>스플래시 컨트롤</h2>
+
+        <div class="form-group">
+          <label for="splashEmojiInput">이모지</label>
+          <input id="splashEmojiInput" type="text" maxlength="2" value="🚀" />
+        </div>
+
+        <div class="form-group split">
+          <div>
+            <label for="titleLine1">타이틀 1줄</label>
+            <input id="titleLine1" type="text" value="수능" />
+          </div>
+          <div>
+            <label for="titleLine2">타이틀 2줄</label>
+            <input id="titleLine2" type="text" value="브레이커" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subtitleInput">보조 문구</label>
+          <input id="subtitleInput" type="text" value="CSAT BREAKER" />
+        </div>
+
+        <div class="form-group split">
+          <div>
+            <label for="splashColorStart">그라데이션 시작</label>
+            <input type="color" id="splashColorStart" value="#7f5af0" />
+          </div>
+          <div>
+            <label for="splashColorEnd">그라데이션 끝</label>
+            <input type="color" id="splashColorEnd" value="#2b2d77" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="splashAngleInput">그라데이션 각도 (<span
+              id="splashAngleValue"
+              >145</span
+            >°)</label
+          >
+          <input
+            type="range"
+            id="splashAngleInput"
+            min="0"
+            max="360"
+            value="145"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="titleSizeInput">타이틀 크기 (<span id="titleSizeValue"
+              >96</span
+            >px)</label
+          >
+          <input
+            type="range"
+            id="titleSizeInput"
+            min="48"
+            max="140"
+            value="96"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="subtitleSizeInput">보조 문구 크기 (<span
+              id="subtitleSizeValue"
+              >32</span
+            >px)</label
+          >
+          <input
+            type="range"
+            id="subtitleSizeInput"
+            min="18"
+            max="56"
+            value="32"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="letterSpacingInput">타이틀 간격 (<span
+              id="letterSpacingValue"
+              >-4</span
+            >px)</label
+          >
+          <input
+            type="range"
+            id="letterSpacingInput"
+            min="-10"
+            max="10"
+            value="-4"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="textColorInput">텍스트 컬러</label>
+          <input type="color" id="textColorInput" value="#ffffff" />
+        </div>
+
+        <div class="button-row" style="margin-bottom: 24px">
+          <button class="secondary" id="splashRandomButton">
+            🎲 랜덤 무드
+          </button>
+          <button class="secondary" id="copySplashConfigButton">
+            📋 설정 복사
+          </button>
+        </div>
+
+        <h2>내보내기</h2>
+        <div class="button-row">
+          <button
+            class="primary"
+            data-width="1242"
+            data-height="2688"
+            data-filename="splash-1242x2688.png"
+          >
+            📱 iPhone (1242x2688)
+          </button>
+          <button
+            class="primary"
+            data-width="1284"
+            data-height="2778"
+            data-filename="splash-1284x2778.png"
+          >
+            📱 Pro Max (1284x2778)
+          </button>
+        </div>
+        <p class="helper">
+          Expo 에서는 <code>assets/splash.png</code> 로 저장 후
+          <code>app.json</code> 의 <code>expo.splash.image</code> 와
+          <code>expo.splash.backgroundColor</code> 를 위 설정과 동일하게 맞춰주세요.
+        </p>
+      </section>
+
+      <section class="preview-area">
+        <div class="device-frame">
+          <div id="splash-screen">
+            <div class="splash-emoji" id="splashEmoji">🚀</div>
+            <div class="splash-title">
+              <span id="splashTitleLine1">수능</span>
+              <span id="splashTitleLine2">브레이커</span>
+            </div>
+            <div class="splash-subtitle" id="splashSubtitle">
+              CSAT BREAKER
+            </div>
+          </div>
+        </div>
+
+        <div class="mockups">
+          <div class="mockup-card">
+            <h3>Store Thumbnail</h3>
+            <div class="mini-phone">
+              <span class="emoji" data-splash-preview-emoji>🚀</span>
+              <div class="title">
+                <span data-splash-preview-title>수능</span>
+                <span data-splash-preview-title>브레이커</span>
+              </div>
+              <div class="subtitle" data-splash-preview-subtitle>
+                CSAT BREAKER
+              </div>
+            </div>
+          </div>
+          <div class="mockup-card">
+            <h3>Dark/Light Safe</h3>
+            <p style="margin: 0; color: rgba(255, 255, 255, 0.75); line-height: 1.6">
+              진득한 그라데이션과 충분한 대비를 유지하면 다크/라이트 모드 모두에서
+              자연스럽게 이어집니다.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+      const splashState = {
+        emoji: "🚀",
+        line1: "수능",
+        line2: "브레이커",
+        subtitle: "CSAT BREAKER",
+        gradientStart: "#7f5af0",
+        gradientEnd: "#2b2d77",
+        angle: 145,
+        titleSize: 96,
+        subtitleSize: 32,
+        titleSpacing: -4,
+        textColor: "#ffffff",
+      };
+
+      const refs = {
+        emojiInput: document.getElementById("splashEmojiInput"),
+        line1Input: document.getElementById("titleLine1"),
+        line2Input: document.getElementById("titleLine2"),
+        subtitleInput: document.getElementById("subtitleInput"),
+        colorStart: document.getElementById("splashColorStart"),
+        colorEnd: document.getElementById("splashColorEnd"),
+        angleInput: document.getElementById("splashAngleInput"),
+        angleValue: document.getElementById("splashAngleValue"),
+        titleSizeInput: document.getElementById("titleSizeInput"),
+        titleSizeValue: document.getElementById("titleSizeValue"),
+        subtitleSizeInput: document.getElementById("subtitleSizeInput"),
+        subtitleSizeValue: document.getElementById("subtitleSizeValue"),
+        letterSpacingInput: document.getElementById("letterSpacingInput"),
+        letterSpacingValue: document.getElementById("letterSpacingValue"),
+        textColorInput: document.getElementById("textColorInput"),
+        emoji: document.getElementById("splashEmoji"),
+        line1: document.getElementById("splashTitleLine1"),
+        line2: document.getElementById("splashTitleLine2"),
+        subtitle: document.getElementById("splashSubtitle"),
+        previewEmoji: document.querySelector("[data-splash-preview-emoji]"),
+        previewTitles: document.querySelectorAll("[data-splash-preview-title]"),
+        previewSubtitle: document.querySelector("[data-splash-preview-subtitle]"),
+      };
+
+      const setSplashVar = (name, value) =>
+        document.documentElement.style.setProperty(name, value);
+
+      function applySplashState() {
+        refs.emoji.textContent = splashState.emoji;
+        refs.line1.textContent = splashState.line1;
+        refs.line2.textContent = splashState.line2;
+        refs.subtitle.textContent = splashState.subtitle;
+        refs.previewEmoji.textContent = splashState.emoji;
+        refs.previewTitles.forEach((node, index) => {
+          node.textContent = index === 0 ? splashState.line1 : splashState.line2;
+        });
+        refs.previewSubtitle.textContent = splashState.subtitle;
+
+        setSplashVar("--splash-gradient-start", splashState.gradientStart);
+        setSplashVar("--splash-gradient-end", splashState.gradientEnd);
+        setSplashVar("--splash-gradient-angle", `${splashState.angle}deg`);
+        setSplashVar("--title-size", `${splashState.titleSize}px`);
+        setSplashVar("--subtitle-size", `${splashState.subtitleSize}px`);
+        setSplashVar("--title-spacing", `${splashState.titleSpacing}px`);
+        setSplashVar("--splash-text-color", splashState.textColor);
+
+        refs.emojiInput.value = splashState.emoji;
+        refs.line1Input.value = splashState.line1;
+        refs.line2Input.value = splashState.line2;
+        refs.subtitleInput.value = splashState.subtitle;
+        refs.colorStart.value = splashState.gradientStart;
+        refs.colorEnd.value = splashState.gradientEnd;
+        refs.angleInput.value = splashState.angle;
+        refs.angleValue.textContent = splashState.angle;
+        refs.titleSizeInput.value = splashState.titleSize;
+        refs.titleSizeValue.textContent = splashState.titleSize;
+        refs.subtitleSizeInput.value = splashState.subtitleSize;
+        refs.subtitleSizeValue.textContent = splashState.subtitleSize;
+        refs.letterSpacingInput.value = splashState.titleSpacing;
+        refs.letterSpacingValue.textContent = splashState.titleSpacing;
+        refs.textColorInput.value = splashState.textColor;
+      }
+
+      function updateSplashFromInputs() {
+        splashState.emoji = refs.emojiInput.value.trim() || "⚡️";
+        splashState.line1 = refs.line1Input.value.trim() || "My";
+        splashState.line2 = refs.line2Input.value.trim() || "App";
+        splashState.subtitle = refs.subtitleInput.value.trim() || "SPLASH";
+        splashState.gradientStart = refs.colorStart.value;
+        splashState.gradientEnd = refs.colorEnd.value;
+        splashState.angle = Number(refs.angleInput.value);
+        splashState.titleSize = Number(refs.titleSizeInput.value);
+        splashState.subtitleSize = Number(refs.subtitleSizeInput.value);
+        splashState.titleSpacing = Number(refs.letterSpacingInput.value);
+        splashState.textColor = refs.textColorInput.value;
+        applySplashState();
+      }
+
+      [
+        refs.emojiInput,
+        refs.line1Input,
+        refs.line2Input,
+        refs.subtitleInput,
+        refs.colorStart,
+        refs.colorEnd,
+        refs.angleInput,
+        refs.titleSizeInput,
+        refs.subtitleSizeInput,
+        refs.letterSpacingInput,
+        refs.textColorInput,
+      ].forEach((input) => input.addEventListener("input", updateSplashFromInputs));
+
+      const splashPalettes = [
+        {
+          emoji: "🔥",
+          start: "#f83600",
+          end: "#fe8c00",
+          line1: "Focus",
+          line2: "Mode",
+          subtitle: "KICKSTART",
+        },
+        {
+          emoji: "🌊",
+          start: "#00c6ff",
+          end: "#0072ff",
+          line1: "Ocean",
+          line2: "Mind",
+          subtitle: "BREATHE",
+        },
+        {
+          emoji: "🌿",
+          start: "#43cea2",
+          end: "#185a9d",
+          line1: "Green",
+          line2: "Camp",
+          subtitle: "FOCUS",
+        },
+        {
+          emoji: "☀️",
+          start: "#f7971e",
+          end: "#ffd200",
+          line1: "Sunny",
+          line2: "Day",
+          subtitle: "GOOD VIBES",
+        },
+        {
+          emoji: "🪐",
+          start: "#654ea3",
+          end: "#eaafc8",
+          line1: "Space",
+          line2: "Lab",
+          subtitle: "LAUNCH",
+        },
+      ];
+
+      document
+        .getElementById("splashRandomButton")
+        .addEventListener("click", () => {
+          const random = splashPalettes[Math.floor(Math.random() * splashPalettes.length)];
+          splashState.emoji = random.emoji;
+          splashState.line1 = random.line1;
+          splashState.line2 = random.line2;
+          splashState.subtitle = random.subtitle;
+          splashState.gradientStart = random.start;
+          splashState.gradientEnd = random.end;
+          splashState.angle = 100 + Math.floor(Math.random() * 160);
+          splashState.titleSize = 80 + Math.floor(Math.random() * 40);
+          splashState.subtitleSize = 26 + Math.floor(Math.random() * 14);
+          splashState.titleSpacing = -8 + Math.floor(Math.random() * 12);
+          splashState.textColor = "#ffffff";
+          applySplashState();
+        });
+
+      document
+        .getElementById("copySplashConfigButton")
+        .addEventListener("click", async () => {
+          const snippet = `splash image + bg\nemoji=${splashState.emoji}\ncolor=${splashState.gradientStart} → ${splashState.gradientEnd}`;
+          try {
+            await navigator.clipboard.writeText(snippet);
+            alert("스플래시 설정이 복사되었습니다.");
+          } catch (error) {
+            alert("복사에 실패했습니다. (HTTPS 환경 권장)");
+          }
+        });
+
+      async function downloadSplash(button) {
+        const width = Number(button.dataset.width);
+        const height = Number(button.dataset.height);
+        const splash = document.getElementById("splash-screen");
+        const scale = width / splash.offsetWidth;
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "⏳ 렌더링 중...";
+
+        try {
+          const rendered = await html2canvas(splash, {
+            scale,
+            backgroundColor: null,
+          });
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(rendered, 0, 0, width, height);
+
+          const link = document.createElement("a");
+          link.download = button.dataset.filename;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        } catch (error) {
+          console.error(error);
+          alert("스플래시를 내보내지 못했습니다.");
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      document
+        .querySelectorAll('button[data-width][data-height]')
+        .forEach((button) => button.addEventListener("click", () => downloadSplash(button)));
+
+      applySplashState();
+    </script>
+  </body>
+</html>
