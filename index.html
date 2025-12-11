@@ -198,6 +198,120 @@
         flex: 1;
       }
 
+      .emoji-input-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .emoji-picker-toggle {
+        min-width: 128px;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .emoji-picker-layer {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background: rgba(8, 9, 17, 0.55);
+        backdrop-filter: blur(6px);
+        padding: 32px 24px;
+        justify-content: center;
+        align-items: flex-start;
+        overflow: auto;
+      }
+
+      .emoji-picker-layer.open {
+        display: flex;
+      }
+
+      .emoji-picker {
+        width: min(880px, 100%);
+        margin-top: 10px;
+        padding: 14px 16px 18px;
+        border-radius: 18px;
+        background: rgba(18, 20, 30, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+      }
+
+      .emoji-picker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.72);
+        gap: 10px;
+      }
+
+      .emoji-picker-close {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .emoji-picker-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+        gap: 8px;
+      }
+
+      .emoji-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 8px 0 4px;
+        gap: 10px;
+      }
+
+      .emoji-page-info {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.74);
+      }
+
+      .emoji-picker-tabs {
+        display: inline-flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .emoji-tab {
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #fff;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .emoji-tab.active {
+        background: linear-gradient(135deg, #7f5af0, #00d1ff);
+        border-color: rgba(255, 255, 255, 0.24);
+      }
+
+      .emoji-chip {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        color: #fff;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+
+      .emoji-chip:hover {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+
       button {
         border: none;
         border-radius: 12px;
@@ -222,6 +336,11 @@
       button.secondary {
         background: rgba(255, 255, 255, 0.12);
         color: white;
+      }
+
+      button.emoji-picker-toggle,
+      button.emoji-chip {
+        color: #fff;
       }
 
       button:disabled {
@@ -854,13 +973,68 @@
 
           <div class="form-group">
             <label for="emojiInput">아이콘 이모지</label>
-            <input
-              id="emojiInput"
-              type="text"
-              maxlength="2"
-              value="🚀"
-              autocomplete="off"
-            />
+            <div class="emoji-input-row">
+              <input
+                id="emojiInput"
+                type="text"
+                maxlength="4"
+                value="🚀"
+                autocomplete="off"
+              />
+              <button
+                type="button"
+                class="secondary emoji-picker-toggle"
+                id="emojiPickerButton"
+              >
+                😊 이모지 선택
+              </button>
+            </div>
+            <div class="emoji-picker-layer" id="emojiPicker">
+              <div class="emoji-picker">
+                <div class="emoji-picker-header">
+                  <span>이모지 선택</span>
+                  <button
+                    type="button"
+                    class="secondary emoji-picker-close"
+                    id="emojiPickerClose"
+                  >
+                    닫기
+                  </button>
+                </div>
+                <div class="emoji-picker-tabs" id="emojiPickerTabs">
+                  <button
+                    type="button"
+                    class="emoji-tab active"
+                    data-emoji-tab="frequent"
+                  >
+                    자주 쓰는 이모지
+                  </button>
+                  <button type="button" class="emoji-tab" data-emoji-tab="all">
+                    모든 이모지
+                  </button>
+                </div>
+                <div class="emoji-pagination">
+                  <button
+                    type="button"
+                    class="secondary"
+                    data-emoji-page="prev"
+                    id="emojiPagePrev"
+                  >
+                    이전
+                  </button>
+                  <span class="emoji-page-info" id="emojiPageInfo"></span>
+                  <button
+                    type="button"
+                    class="secondary"
+                    data-emoji-page="next"
+                    id="emojiPageNext"
+                  >
+                    다음
+                  </button>
+                </div>
+                <div class="emoji-picker-grid" id="emojiPickerGrid"></div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group split">
@@ -2026,7 +2200,832 @@
         splashSubtitle: "EMOJI ICON STUDIO",
       };
 
+      const FREQUENT_EMOJIS = [
+        "😀",
+        "😄",
+        "😁",
+        "😆",
+        "😅",
+        "😂",
+        "😊",
+        "🙂",
+        "😉",
+        "😍",
+        "🥰",
+        "😘",
+        "😎",
+        "🤩",
+        "🥳",
+        "🤖",
+        "👾",
+        "🎮",
+        "🎧",
+        "🎨",
+        "🎬",
+        "🚀",
+        "🛰️",
+        "🛸",
+        "🌈",
+        "⭐️",
+        "☀️",
+        "🌙",
+        "🔥",
+        "⚡️",
+        "❄️",
+        "💧",
+        "🌿",
+        "🍀",
+        "🌳",
+        "🌸",
+        "🌻",
+        "🍎",
+        "🍋",
+        "🍉",
+        "🍇",
+        "🍫",
+        "🍕",
+        "🍣",
+        "🥐",
+        "🍰",
+        "☕️",
+        "🍺",
+        "⚽️",
+        "🏀",
+        "🏔️",
+        "🌊",
+        "🏖️",
+        "✈️",
+        "🚗",
+        "🚲",
+        "🛴",
+        "💡",
+        "🧭",
+        "🛠️",
+        "🧰",
+        "🧪",
+        "🎁",
+        "📱",
+        "💻",
+        "⌚️",
+        "📸",
+        "🎵",
+        "🎹",
+        "🎻",
+        "🎺",
+        "🥁",
+        "🧊",
+        "🪄",
+        "🛡️",
+        "💎",
+        "🎯",
+        "🎲",
+        "🧩",
+        "🪁",
+        "🧸",
+        "🎈",
+        "🎉",
+        "🎊",
+        "🎂",
+        "🌟",
+        "🌴",
+        "🌌",
+      ];
+
+      const ALL_EMOJIS = [
+        ...FREQUENT_EMOJIS,
+        "😇",
+        "🥹",
+        "🤔",
+        "🤗",
+        "🤫",
+        "😴",
+        "🤯",
+        "😱",
+        "😈",
+        "👻",
+        "👽",
+        "🤠",
+        "🤑",
+        "🤡",
+        "🥶",
+        "🥵",
+        "🤒",
+        "🤕",
+        "🤧",
+        "🤮",
+        "🤢",
+        "🤤",
+        "🤞",
+        "👍",
+        "👎",
+        "🙏",
+        "👏",
+        "🙌",
+        "🤝",
+        "🤌",
+        "👌",
+        "👈",
+        "👉",
+        "👆",
+        "👇",
+        "☝️",
+        "✌️",
+        "✊",
+        "👊",
+        "🤟",
+        "🤘",
+        "✋",
+        "🤚",
+        "🖐️",
+        "🖖",
+        "👋",
+        "🤙",
+        "💪",
+        "🦾",
+        "🫀",
+        "🧠",
+        "🦷",
+        "🦴",
+        "👀",
+        "👁️",
+        "👄",
+        "🧑",
+        "👩",
+        "👨",
+        "🧒",
+        "👧",
+        "👦",
+        "👩‍🦱",
+        "👨‍🦱",
+        "👩‍🦰",
+        "👨‍🦰",
+        "👩‍🦳",
+        "👨‍🦳",
+        "👩‍🦲",
+        "👨‍🦲",
+        "🧔",
+        "👮",
+        "👷",
+        "💂",
+        "🕵️",
+        "👩‍⚕️",
+        "👨‍⚕️",
+        "👩‍🍳",
+        "👨‍🍳",
+        "👩‍🎓",
+        "👨‍🎓",
+        "👩‍🎤",
+        "👨‍🎤",
+        "👩‍🏫",
+        "👨‍🏫",
+        "👩‍🏭",
+        "👨‍🏭",
+        "👩‍💻",
+        "👨‍💻",
+        "👩‍💼",
+        "👨‍💼",
+        "👩‍🔧",
+        "👨‍🔧",
+        "👩‍🔬",
+        "👨‍🔬",
+        "👩‍🎨",
+        "👨‍🎨",
+        "👩‍🚒",
+        "👨‍🚒",
+        "👩‍✈️",
+        "👨‍✈️",
+        "👩‍🚀",
+        "👨‍🚀",
+        "👩‍⚖️",
+        "👨‍⚖️",
+        "🧙",
+        "🧚",
+        "🧛",
+        "🧜",
+        "🧞",
+        "🧟",
+        "🧝",
+        "🧌",
+        "💃",
+        "🕺",
+        "🧏",
+        "🧑‍🦽",
+        "🧑‍🦼",
+        "🧑‍🦯",
+        "👩‍🍼",
+        "🤱",
+        "🧑‍🎄",
+        "🎅",
+        "🤶",
+        "🦸",
+        "🦹",
+        "🧙‍♀️",
+        "🧙‍♂️",
+        "🧚‍♀️",
+        "🧚‍♂️",
+        "🧛‍♀️",
+        "🧛‍♂️",
+        "🧜‍♀️",
+        "🧜‍♂️",
+        "🧞‍♀️",
+        "🧞‍♂️",
+        "🧟‍♀️",
+        "🧟‍♂️",
+        "🧝‍♀️",
+        "🧝‍♂️",
+        "🦄",
+        "🐶",
+        "🐱",
+        "🐭",
+        "🐹",
+        "🐰",
+        "🦊",
+        "🐻",
+        "🐼",
+        "🐻‍❄️",
+        "🐨",
+        "🐯",
+        "🦁",
+        "🐮",
+        "🐷",
+        "🐸",
+        "🐵",
+        "🐔",
+        "🐧",
+        "🐦",
+        "🦆",
+        "🦅",
+        "🦉",
+        "🦇",
+        "🐺",
+        "🐗",
+        "🐴",
+        "🦄",
+        "🐝",
+        "🐛",
+        "🦋",
+        "🐌",
+        "🐞",
+        "🐢",
+        "🐍",
+        "🦎",
+        "🦂",
+        "🦀",
+        "🦑",
+        "🐙",
+        "🦞",
+        "🦐",
+        "🐠",
+        "🐟",
+        "🐡",
+        "🦈",
+        "🐬",
+        "🦭",
+        "🐳",
+        "🐊",
+        "🦕",
+        "🦖",
+        "🐉",
+        "🌵",
+        "🎄",
+        "🌲",
+        "🌳",
+        "🌴",
+        "🌱",
+        "🌿",
+        "☘️",
+        "🍀",
+        "🍃",
+        "🍂",
+        "🍁",
+        "🍄",
+        "🐚",
+        "🌾",
+        "🌺",
+        "🌸",
+        "🌼",
+        "🌻",
+        "🌞",
+        "🌝",
+        "🌛",
+        "🌜",
+        "⭐️",
+        "🌟",
+        "⚡️",
+        "🔥",
+        "☀️",
+        "🌤️",
+        "⛈️",
+        "🌧️",
+        "❄️",
+        "☁️",
+        "🌫️",
+        "🌪️",
+        "🌈",
+        "🌊",
+        "💧",
+        "🌍",
+        "🌎",
+        "🌏",
+        "🌋",
+        "🏔️",
+        "⛰️",
+        "🏕️",
+        "🏖️",
+        "🏜️",
+        "🏝️",
+        "🏞️",
+        "🏟️",
+        "🏛️",
+        "🏗️",
+        "🗽",
+        "🗼",
+        "⛩️",
+        "🕌",
+        "🕍",
+        "⛪️",
+        "🕋",
+        "⛲️",
+        "⛺️",
+        "🌁",
+        "🌃",
+        "🏙️",
+        "🌄",
+        "🌅",
+        "🌆",
+        "🌇",
+        "🌉",
+        "🛤️",
+        "🚗",
+        "🚕",
+        "🚙",
+        "🚌",
+        "🚎",
+        "🏎️",
+        "🚓",
+        "🚑",
+        "🚒",
+        "🚐",
+        "🚚",
+        "🚛",
+        "🚜",
+        "🛵",
+        "🛴",
+        "🚲",
+        "🛺",
+        "✈️",
+        "🛫",
+        "🛬",
+        "🛩️",
+        "🚀",
+        "🛰️",
+        "🛸",
+        "⛵️",
+        "🚤",
+        "🛥️",
+        "🛳️",
+        "🚁",
+        "🚂",
+        "🚆",
+        "🚇",
+        "🚈",
+        "🚉",
+        "🚊",
+        "🚝",
+        "🚞",
+        "🚋",
+        "🛤️",
+        "🛣️",
+        "🗺️",
+        "🧳",
+        "⌚️",
+        "📱",
+        "💻",
+        "⌨️",
+        "🖥️",
+        "🖨️",
+        "🖱️",
+        "🖲️",
+        "💽",
+        "💾",
+        "💿",
+        "📀",
+        "📷",
+        "📹",
+        "🎥",
+        "📞",
+        "☎️",
+        "📟",
+        "📺",
+        "🎙️",
+        "🎚️",
+        "🎛️",
+        "🎤",
+        "🎧",
+        "📡",
+        "💡",
+        "🔦",
+        "🕯️",
+        "🏮",
+        "🧯",
+        "🛢️",
+        "🔋",
+        "🔌",
+        "🧲",
+        "🧭",
+        "🧱",
+        "🔨",
+        "🪓",
+        "⛏️",
+        "⚒️",
+        "🛠️",
+        "🗡️",
+        "⚔️",
+        "💣",
+        "🧨",
+        "🏹",
+        "🛡️",
+        "🔧",
+        "🪛",
+        "🔩",
+        "⚙️",
+        "🧰",
+        "🧲",
+        "🧪",
+        "🧫",
+        "🧬",
+        "🔬",
+        "🔭",
+        "📡",
+        "📢",
+        "📣",
+        "📯",
+        "🎷",
+        "🎸",
+        "🎻",
+        "🎹",
+        "🥁",
+        "🪘",
+        "🪕",
+        "🎺",
+        "🎵",
+        "🎶",
+        "🎼",
+        "📝",
+        "📖",
+        "📚",
+        "📊",
+        "📈",
+        "📉",
+        "📅",
+        "📆",
+        "🗓️",
+        "📇",
+        "🗃️",
+        "🗂️",
+        "🗞️",
+        "📰",
+        "📑",
+        "🔖",
+        "🏷️",
+        "💰",
+        "💴",
+        "💵",
+        "💶",
+        "💷",
+        "💳",
+        "🪙",
+        "💎",
+        "⚖️",
+        "🔧",
+        "🧲",
+        "⚗️",
+        "🧪",
+        "🧫",
+        "🧬",
+        "💊",
+        "💉",
+        "🩸",
+        "🩹",
+        "🩺",
+        "🩻",
+        "🧠",
+        "🫀",
+        "🫁",
+        "🧻",
+        "🧼",
+        "🪥",
+        "🧽",
+        "🧴",
+        "🪣",
+        "🧹",
+        "🧺",
+        "🧦",
+        "🧤",
+        "🧣",
+        "🧥",
+        "👗",
+        "👔",
+        "👕",
+        "👖",
+        "👚",
+        "👙",
+        "👘",
+        "🥼",
+        "🦺",
+        "👠",
+        "👟",
+        "🥾",
+        "🥿",
+        "👞",
+        "🧢",
+        "🎩",
+        "🎓",
+        "👑",
+        "⛑️",
+        "🎒",
+        "👝",
+        "👛",
+        "👜",
+        "💼",
+        "🧳",
+        "🥽",
+        "🥼",
+        "🌂",
+        "☂️",
+        "🪁",
+        "🎈",
+        "🎉",
+        "🎊",
+        "🎃",
+        "🎄",
+        "🎆",
+        "🎇",
+        "🧨",
+        "✨",
+        "🎋",
+        "🎍",
+        "🎎",
+        "🎏",
+        "🎐",
+        "🎑",
+        "🧧",
+        "🎀",
+        "🎁",
+        "🎗️",
+        "🏆",
+        "🥇",
+        "🥈",
+        "🥉",
+        "🏅",
+        "🎖️",
+        "🎯",
+        "🎱",
+        "🎳",
+        "🎮",
+        "🎰",
+        "🎲",
+        "🧩",
+        "♟️",
+        "🧸",
+        "🪀",
+        "🪁",
+        "🎴",
+        "🃏",
+        "🀄️",
+        "🎭",
+        "🎨",
+        "🧵",
+        "🧶",
+        "🪡",
+        "🪢",
+        "🧥",
+        "🧦",
+        "🥽",
+        "🍇",
+        "🍈",
+        "🍉",
+        "🍊",
+        "🍋",
+        "🍌",
+        "🍍",
+        "🍎",
+        "🍏",
+        "🍐",
+        "🍑",
+        "🍒",
+        "🍓",
+        "🫐",
+        "🥝",
+        "🍅",
+        "🫒",
+        "🥥",
+        "🥑",
+        "🍆",
+        "🥔",
+        "🥕",
+        "🌽",
+        "🌶️",
+        "🫑",
+        "🥒",
+        "🥬",
+        "🥦",
+        "🧄",
+        "🧅",
+        "🍄",
+        "🥜",
+        "🌰",
+        "🍞",
+        "🥐",
+        "🥖",
+        "🫓",
+        "🥨",
+        "🥯",
+        "🥞",
+        "🧇",
+        "🧀",
+        "🍖",
+        "🍗",
+        "🥩",
+        "🥓",
+        "🍔",
+        "🍟",
+        "🍕",
+        "🌭",
+        "🥪",
+        "🌮",
+        "🌯",
+        "🫔",
+        "🥙",
+        "🧆",
+        "🥘",
+        "🍲",
+        "🍛",
+        "🍜",
+        "🦪",
+        "🍣",
+        "🍱",
+        "🍤",
+        "🍚",
+        "🍙",
+        "🍘",
+        "🍥",
+        "🥠",
+        "🥡",
+        "🦞",
+        "🦐",
+        "🦑",
+        "🍦",
+        "🍧",
+        "🍨",
+        "🍩",
+        "🍪",
+        "🎂",
+        "🍰",
+        "🧁",
+        "🥧",
+        "🍫",
+        "🍬",
+        "🍭",
+        "🍮",
+        "🍯",
+        "🍼",
+        "🥛",
+        "☕️",
+        "🫖",
+        "🍵",
+        "🍶",
+        "🍺",
+        "🍻",
+        "🥂",
+        "🍷",
+        "🥃",
+        "🍸",
+        "🍹",
+        "🧉",
+        "🍾",
+        "🥄",
+        "🍴",
+        "🍽️",
+        "🥣",
+        "🥡",
+        "⚽️",
+        "🏀",
+        "🏈",
+        "⚾️",
+        "🥎",
+        "🎾",
+        "🏐",
+        "🏉",
+        "🥏",
+        "🎱",
+        "🪀",
+        "🏓",
+        "🏸",
+        "🥅",
+        "⛳️",
+        "🏒",
+        "🏑",
+        "🥍",
+        "🥌",
+        "⛸️",
+        "🛷",
+        "🥊",
+        "🥋",
+        "🎽",
+        "🛼",
+        "🛹",
+        "🛶",
+        "🥁",
+        "🎺",
+        "🎷",
+        "🎸",
+        "🎻",
+        "🎹",
+        "🪗",
+        "🪘",
+        "🎼",
+        "🎧",
+        "🎤",
+        "🔔",
+        "⏰",
+        "⏳",
+        "⌛️",
+        "⏱️",
+        "⏲️",
+        "🧭",
+        "🌡️",
+        "🧭",
+        "🎒",
+        "🧳",
+      ];
+
+      const CURATED_GRADIENTS = [
+        { start: "#ff8a00", end: "#e52e71" },
+        { start: "#ff6cab", end: "#7366ff" },
+        { start: "#00f5a0", end: "#00d9f5" },
+        { start: "#f7971e", end: "#ffd200" },
+        { start: "#8a2be2", end: "#4a00e0" },
+        { start: "#43cea2", end: "#185a9d" },
+        { start: "#f83600", end: "#fe8c00" },
+        { start: "#00c6ff", end: "#0072ff" },
+        { start: "#ff9966", end: "#ff5e62" },
+        { start: "#c33764", end: "#1d2671" },
+        { start: "#f857a6", end: "#ff5858" },
+        { start: "#3494e6", end: "#ec6ead" },
+        { start: "#11998e", end: "#38ef7d" },
+        { start: "#fc5c7d", end: "#6a82fb" },
+        { start: "#fc466b", end: "#3f5efb" },
+        { start: "#7f00ff", end: "#e100ff" },
+        { start: "#1a2a6c", end: "#fdbb2d" },
+        { start: "#a8c0ff", end: "#3f2b96" },
+        { start: "#4568dc", end: "#b06ab3" },
+        { start: "#ff5f6d", end: "#ffc371" },
+        { start: "#5ee7df", end: "#b490ca" },
+        { start: "#30cfd0", end: "#330867" },
+        { start: "#16a085", end: "#f4d03f" },
+        { start: "#c21500", end: "#ffc500" },
+        { start: "#eecda3", end: "#ef629f" },
+        { start: "#52acff", end: "#ffe32c" },
+        { start: "#09203f", end: "#537895" },
+        { start: "#ee9ca7", end: "#ffdde1" },
+        { start: "#ffd89b", end: "#19547b" },
+        { start: "#ff9a9e", end: "#fecfef" },
+        { start: "#a1c4fd", end: "#c2e9fb" },
+        { start: "#0fd850", end: "#f9f047" },
+        { start: "#4158d0", end: "#c850c0" },
+        { start: "#0093e9", end: "#80d0c7" },
+        { start: "#3f2b96", end: "#a8c0ff" },
+        { start: "#ff5858", end: "#f09819" },
+        { start: "#4158d0", end: "#ffcc70" },
+        { start: "#ee0979", end: "#ff6a00" },
+        { start: "#02aab0", end: "#00cdac" },
+        { start: "#f8ffae", end: "#43c6ac" },
+        { start: "#ffe29f", end: "#ffa99f" },
+        { start: "#00c9ff", end: "#92fe9d" },
+        { start: "#fddb92", end: "#d1fdff" },
+        { start: "#7de2fc", end: "#b9b6e5" },
+        { start: "#f15f79", end: "#b24592" },
+        { start: "#fa709a", end: "#fee140" },
+        { start: "#b2fefa", end: "#0ed2f7" },
+        { start: "#f6d365", end: "#fda085" },
+        { start: "#a8ff78", end: "#78ffd6" },
+        { start: "#ffd3a5", end: "#fd6585" },
+        { start: "#43e97b", end: "#38f9d7" },
+        { start: "#08aeea", end: "#2af598" },
+      ];
+
+      const SAFE_RANDOM_EMOJI_SIZE = { min: 300, max: 440 };
+
       const emojiInput = document.getElementById("emojiInput");
+      const emojiPickerButton = document.getElementById("emojiPickerButton");
+      const emojiPicker = document.getElementById("emojiPicker");
+      const emojiPickerGrid = document.getElementById("emojiPickerGrid");
+      const emojiPickerClose = document.getElementById("emojiPickerClose");
+      const emojiPickerTabs = document.querySelectorAll("[data-emoji-tab]");
+      const emojiPagePrev = document.getElementById("emojiPagePrev");
+      const emojiPageNext = document.getElementById("emojiPageNext");
+      const emojiPageInfo = document.getElementById("emojiPageInfo");
       const colorStartInput = document.getElementById("colorStart");
       const colorEndInput = document.getElementById("colorEnd");
       const angleInput = document.getElementById("angleInput");
@@ -2057,6 +3056,7 @@
       const ICON_BASE_SIZE = 520;
       const SPLASH_BASE_WIDTH = 372;
       const SPLASH_BASE_HEIGHT = 804;
+      const EMOJI_PAGE_SIZE = 120;
 
       function applyState() {
         emojiInput.value = state.emoji;
@@ -2103,6 +3103,129 @@
       radiusInput.addEventListener("input", updateFromInputs);
       emojiSizeInput.addEventListener("input", updateFromInputs);
       glowInput.addEventListener("input", updateFromInputs);
+
+      function toggleEmojiPicker(forceOpen) {
+        if (!emojiPicker) return;
+        const shouldOpen =
+          typeof forceOpen === "boolean"
+            ? forceOpen
+            : !emojiPicker.classList.contains("open");
+        emojiPicker.classList.toggle("open", shouldOpen);
+        if (shouldOpen) {
+          buildEmojiPicker();
+        }
+      }
+
+      let currentEmojiCategory = "frequent";
+      let currentEmojiPage = 0;
+
+      function getEmojiSource() {
+        return currentEmojiCategory === "all" ? ALL_EMOJIS : FREQUENT_EMOJIS;
+      }
+
+      function updateEmojiPagination() {
+        if (!emojiPageInfo) return;
+        const sourceLength = getEmojiSource().length;
+        const totalPages = Math.max(
+          1,
+          Math.ceil(sourceLength / EMOJI_PAGE_SIZE)
+        );
+        currentEmojiPage = Math.min(currentEmojiPage, totalPages - 1);
+        emojiPageInfo.textContent = `${currentEmojiPage + 1} / ${totalPages}`;
+        if (emojiPagePrev) {
+          emojiPagePrev.disabled = currentEmojiPage === 0;
+        }
+        if (emojiPageNext) {
+          emojiPageNext.disabled = currentEmojiPage >= totalPages - 1;
+        }
+      }
+
+      function setEmojiTab(category) {
+        currentEmojiCategory = category;
+        currentEmojiPage = 0;
+        emojiPickerTabs.forEach((tab) => {
+          tab.classList.toggle("active", tab.dataset.emojiTab === category);
+        });
+        buildEmojiPicker();
+      }
+
+      function buildEmojiPicker() {
+        if (!emojiPickerGrid) return;
+        const source = getEmojiSource();
+        const start = currentEmojiPage * EMOJI_PAGE_SIZE;
+        const slice = source.slice(start, start + EMOJI_PAGE_SIZE);
+
+        emojiPickerGrid.innerHTML = "";
+        slice.forEach((emoji) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "emoji-chip";
+          button.dataset.emojiOption = emoji;
+          button.textContent = emoji;
+          emojiPickerGrid.appendChild(button);
+        });
+
+        updateEmojiPagination();
+      }
+
+      if (emojiPickerGrid) {
+        buildEmojiPicker();
+        emojiPickerGrid.addEventListener("click", (event) => {
+          const target = event.target.closest("[data-emoji-option]");
+          if (!target) return;
+          state.emoji = target.dataset.emojiOption;
+          applyState();
+          toggleEmojiPicker(false);
+        });
+      }
+
+      if (emojiPagePrev) {
+        emojiPagePrev.addEventListener("click", () => {
+          if (currentEmojiPage === 0) return;
+          currentEmojiPage -= 1;
+          buildEmojiPicker();
+        });
+      }
+
+      if (emojiPageNext) {
+        emojiPageNext.addEventListener("click", () => {
+          const totalPages = Math.max(
+            1,
+            Math.ceil(getEmojiSource().length / EMOJI_PAGE_SIZE)
+          );
+          if (currentEmojiPage >= totalPages - 1) return;
+          currentEmojiPage += 1;
+          buildEmojiPicker();
+        });
+      }
+
+      if (emojiPickerButton) {
+        emojiPickerButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          toggleEmojiPicker();
+        });
+      }
+
+      if (emojiPickerClose) {
+        emojiPickerClose.addEventListener("click", () => toggleEmojiPicker(false));
+      }
+
+      if (emojiPickerTabs.length) {
+        emojiPickerTabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            if (!tab.dataset.emojiTab) return;
+            setEmojiTab(tab.dataset.emojiTab);
+          });
+        });
+      }
+
+      if (emojiPicker) {
+        emojiPicker.addEventListener("click", (event) => {
+          if (event.target === emojiPicker) {
+            toggleEmojiPicker(false);
+          }
+        });
+      }
 
       if (splashTitleInput) {
         splashTitleInput.addEventListener("input", () => {
@@ -2451,15 +3574,63 @@
         { size: 32, filename: "favicon-32.png" },
       ];
 
-      const randomPalettes = [
-        { start: "#00c6ff", end: "#0072ff", emoji: "🌊" },
-        { start: "#7f5af0", end: "#ff5470", emoji: "⚡️" },
-        { start: "#00f5a0", end: "#00d9f5", emoji: "💚" },
-        { start: "#f7971e", end: "#ffd200", emoji: "🌞" },
-        { start: "#ff6cab", end: "#7366ff", emoji: "🎉" },
-        { start: "#8a2be2", end: "#4a00e0", emoji: "🪄" },
-        { start: "#43cea2", end: "#185a9d", emoji: "🌿" },
-      ];
+      function hslToHex(h, s, l) {
+        const sNorm = s / 100;
+        const lNorm = l / 100;
+        const k = (n) => (n + h / 30) % 12;
+        const a = sNorm * Math.min(lNorm, 1 - lNorm);
+        const f = (n) =>
+          lNorm - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+        const toHex = (x) =>
+          Math.round(255 * x)
+            .toString(16)
+            .padStart(2, "0");
+        return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
+      }
+
+      function generateDynamicGradient() {
+        const baseHue = Math.floor(Math.random() * 360);
+        const offset = 18 + Math.random() * 90;
+        const saturation = 70 + Math.random() * 15;
+        const lightness = 48 + Math.random() * 8;
+        const endLightness = 40 + Math.random() * 12;
+        return {
+          start: hslToHex(baseHue, saturation, lightness),
+          end: hslToHex((baseHue + offset) % 360, saturation - 5, endLightness),
+        };
+      }
+
+      function pickRandomGradient() {
+        if (Math.random() < 0.6) {
+          return CURATED_GRADIENTS[
+            Math.floor(Math.random() * CURATED_GRADIENTS.length)
+          ];
+        }
+        return generateDynamicGradient();
+      }
+
+      function pickRandomEmoji() {
+        return FREQUENT_EMOJIS[
+          Math.floor(Math.random() * FREQUENT_EMOJIS.length)
+        ];
+      }
+
+      function randomizeIcon() {
+        const palette = pickRandomGradient();
+        const emojiSizeRange = SAFE_RANDOM_EMOJI_SIZE;
+        const emojiSize =
+          emojiSizeRange.min +
+          Math.floor(Math.random() * (emojiSizeRange.max - emojiSizeRange.min));
+        const radius = 130 + Math.floor(Math.random() * 110);
+        state.emoji = pickRandomEmoji();
+        state.gradientStart = palette.start;
+        state.gradientEnd = palette.end;
+        state.angle = Math.floor(Math.random() * 360);
+        state.radius = Math.min(radius, 260);
+        state.emojiSize = emojiSize;
+        state.glow = Number((0.12 + Math.random() * 0.22).toFixed(2));
+        applyState();
+      }
 
       const randomSplashTexts = [
         { title: "AshLight", subtitle: "EMOJI ICON STUDIO" },
@@ -2474,18 +3645,10 @@
         { title: "AshLight Studio", subtitle: "BRING YOUR IDEA TO LIGHT" },
       ];
 
-      document.getElementById("randomButton").addEventListener("click", () => {
-        const randomItem =
-          randomPalettes[Math.floor(Math.random() * randomPalettes.length)];
-        state.emoji = randomItem.emoji;
-        state.gradientStart = randomItem.start;
-        state.gradientEnd = randomItem.end;
-        state.angle = Math.floor(Math.random() * 360);
-        state.radius = 160 + Math.floor(Math.random() * 70);
-        state.emojiSize = 320 + Math.floor(Math.random() * 160);
-        state.glow = 0.12 + Math.random() * 0.18;
-        applyState();
-      });
+      const randomButton = document.getElementById("randomButton");
+      if (randomButton) {
+        randomButton.addEventListener("click", randomizeIcon);
+      }
 
       const randomizeSplashTexts = () => {
         const randomPreset =
