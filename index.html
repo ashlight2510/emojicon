@@ -9,6 +9,26 @@
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1204894220949193"
       crossorigin="anonymous"
     ></script>
+    <!-- Dable 스크립트 시작 / 문의 media@dable.io -->
+    <script>
+      (function (d, a, b, l, e, r) {
+        if (d[b] && d[b].q) return;
+        d[b] =
+          d[b] ||
+          function () {
+            (d[b].q = d[b].q || []).push(arguments);
+          };
+        e = a.createElement(l);
+        e.async = 1;
+        e.charset = "utf-8";
+        e.src = "//static.dable.io/dist/plugin.min.js";
+        r = a.getElementsByTagName(l)[0];
+        r.parentNode.insertBefore(e, r);
+      })(window, document, "dable", "script");
+      dable("setService", "<%= service.service_name %>");
+      dable("sendLogOnce");
+    </script>
+    <!-- Dable 스크립트 종료 / 문의 media@dable.io -->
     <title>AshLight Emoji Icon Studio</title>
     <link
       rel="icon"
@@ -3045,7 +3065,10 @@
             buildEmojiPicker();
           }
         } catch (error) {
-          console.warn("원격 이모지 불러오기 실패, 로컬 풀을 사용합니다.", error);
+          console.warn(
+            "원격 이모지 불러오기 실패, 로컬 풀을 사용합니다.",
+            error
+          );
         }
       }
 
