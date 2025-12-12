@@ -736,6 +736,27 @@
         color: rgba(255, 255, 255, 0.6);
       }
 
+      .home-dable {
+        max-width: 1200px;
+        margin: 14px auto 32px;
+        padding: 18px 18px 10px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      }
+
+      .home-dable .ad-label {
+        color: rgba(255, 255, 255, 0.72);
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .home-dable-inner {
+        display: grid;
+        justify-items: center;
+      }
+
       .main-nav {
         position: sticky;
         top: 0;
@@ -1165,6 +1186,19 @@
         </button>
       </div>
     </header>
+
+    <section class="home-dable" id="home-dable" aria-label="추천 위젯">
+      <div class="ad-label">추천 콘텐츠</div>
+      <div class="home-dable-inner">
+        <!-- Begin Dable responsive / For inquiries, visit http://dable.io -->
+        <div
+          id="dablewidget_GokzprNX_jobwpAd7"
+          data-widget_id-pc="GokzprNX"
+          data-widget_id-mo="jobwpAd7"
+        ></div>
+        <!-- End responsive / For inquiries, visit http://dable.io -->
+      </div>
+    </section>
 
     <div class="tool-container active" id="iconTool">
       <main>
@@ -2388,6 +2422,23 @@
         splashTitle: "AshLight",
         splashSubtitle: "EMOJI ICON STUDIO",
       };
+
+      function renderHomeDableWidget() {
+        if (typeof dable !== "function") return;
+        try {
+          dable("renderWidgetByWidth", "dablewidget_GokzprNX_jobwpAd7", {
+            ignore_items: true,
+          });
+        } catch (error) {
+          console.error("Dable 위젯 렌더링 실패:", error);
+        }
+      }
+
+      if (document.readyState === "complete") {
+        renderHomeDableWidget();
+      } else {
+        window.addEventListener("load", renderHomeDableWidget);
+      }
 
       const FREQUENT_EMOJIS = [
         "😀",
@@ -3732,6 +3783,7 @@
       // 페이지 전환 함수
       function showPage(pageId) {
         const homePage = document.getElementById("home-page");
+        const homeAd = document.getElementById("home-dable");
         const toolContainers = document.querySelectorAll(".tool-container");
 
         // 콘텐츠 페이지 숨김
@@ -3749,6 +3801,9 @@
             homePage.style.display = "block";
             window.scrollTo({ top: 0, behavior: "smooth" });
           }
+          if (homeAd) {
+            homeAd.style.removeProperty("display");
+          }
           toolContainers.forEach((container) => {
             container.style.removeProperty("display");
           });
@@ -3761,6 +3816,9 @@
         // 홈 섹션과 툴 숨김
         if (homePage) {
           homePage.style.display = "none";
+        }
+        if (homeAd) {
+          homeAd.style.display = "none";
         }
         toolContainers.forEach((container) => {
           container.style.display = "none";
