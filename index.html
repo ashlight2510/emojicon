@@ -115,6 +115,32 @@
         box-shadow: 0 10px 25px rgba(127, 90, 240, 0.4);
       }
 
+      .lang-switch {
+        display: inline-flex;
+        gap: 6px;
+        padding: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .lang-switch button {
+        border: none;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+      }
+
+      .lang-switch button.active {
+        background: linear-gradient(135deg, #7f5af0, #00d1ff);
+        color: #fff;
+      }
+
       .tool-container {
         display: none;
         margin-bottom: 48px;
@@ -1142,14 +1168,29 @@
             href="#home"
             class="active"
             onclick="showPage('home'); return false;"
+            data-i18n="navHome"
             >홈</a
           >
-          <a href="#guide" onclick="showPage('guide'); return false;">가이드</a>
-          <a href="#blog" onclick="showPage('blog'); return false;">블로그</a>
-          <a href="#about" onclick="showPage('about'); return false;">소개</a>
+          <a
+            href="#guide"
+            onclick="showPage('guide'); return false;"
+            data-i18n="navGuide"
+            >가이드</a
+          >
+          <a href="#blog" onclick="showPage('blog'); return false;" data-i18n="navBlog"
+            >블로그</a
+          >
+          <a href="#about" onclick="showPage('about'); return false;" data-i18n="navAbout"
+            >소개</a
+          >
           <a href="#privacy" onclick="showPage('privacy'); return false;"
+            data-i18n="navPrivacy"
             >개인정보처리방침</a
           >
+        </div>
+        <div class="lang-switch" role="tablist" aria-label="Language switcher">
+          <button type="button" data-lang="ko" class="active">한국어</button>
+          <button type="button" data-lang="en">English</button>
         </div>
         <div class="nav-extra-buttons">
           <a
@@ -1170,8 +1211,8 @@
       </div>
     </nav>
     <header class="hero" id="home-page">
-      <h1>⚡️ AshLight 이모지 아이콘 스튜디오</h1>
-      <p class="description">
+      <h1 data-i18n="heroTitle">⚡️ AshLight 이모지 아이콘 스튜디오</h1>
+      <p class="description" data-i18n="heroDesc1">
         이모지를 한 글자만 넣으면 아이콘, 파비콘, 앱스토어용 이미지까지 한 번에
         뽑아주는 AshLight 제작 툴입니다. 컬러를 고르고, 랜덤 프리셋으로 영감도
         얻고, 다운로드만 누르면 곧바로 배포 준비 완료!
@@ -1179,13 +1220,18 @@
       <p
         class="description"
         style="margin-top: 16px; font-size: 15px; opacity: 0.9"
+        data-i18n="heroDesc2"
       >
         iOS, Android, 웹 등 다양한 플랫폼에 최적화된 아이콘을 생성합니다. React
         Native, Expo, Flutter 등 크로스 플랫폼 프레임워크와도 완벽하게
         호환됩니다. 전문 디자인 도구 없이도 몇 분 만에 전문적인 앱 아이콘을 만들
         수 있습니다.
       </p>
-      <p class="description" style="line-height: 1.7; opacity: 0.9">
+      <p
+        class="description"
+        style="line-height: 1.7; opacity: 0.9"
+        data-i18n-html="heroDesc3"
+      >
         이 도구는
         <strong
           >누구나 5분 만에 스토어 심사에 바로 제출할 수 있는 아이콘·스플래시
@@ -1197,26 +1243,37 @@
         제공합니다.
       </p>
       <div class="status-row">
-        <a href="#guide" onclick="showPage('guide'); return false;"
+        <a href="#guide" onclick="showPage('guide'); return false;" data-i18n="heroGuideLink"
           >📚 완전 가이드</a
         >
-        <a href="#blog" onclick="showPage('blog'); return false;">📝 블로그</a>
+        <a href="#blog" onclick="showPage('blog'); return false;" data-i18n="heroBlogLink"
+          >📝 블로그</a
+        >
       </div>
-      <p class="gratitude">
+      <p class="gratitude" data-i18n="heroThanks">
         사용해주셔서 감사합니다. 좋은 하루 보내시고, 멋진 서비스를 만드는데 이
         툴이 작은 도움이 되길 바랍니다!
       </p>
       <div class="nav-tabs">
-        <button class="nav-button active" data-tool-target="iconTool">
+        <button
+          class="nav-button active"
+          data-tool-target="iconTool"
+          data-i18n="tabIconStudio"
+        >
           🪄 아이콘 스튜디오
         </button>
-        <button class="nav-button" data-tool-target="splashTool">
+        <button class="nav-button" data-tool-target="splashTool" data-i18n="tabSplashStudio">
           🌅 스플래시 스튜디오
         </button>
       </div>
     </header>
 
-    <section class="home-dable" id="home-dable" aria-label="추천 위젯">
+    <section
+      class="home-dable"
+      id="home-dable"
+      aria-label="추천 위젯"
+      data-i18n-aria="dableWidgetLabel"
+    >
       <!-- Begin Dable responsive / For inquiries, visit http://dable.io -->
       <div
         id="dablewidget_GokzprNX_jobwpAd7"
@@ -1229,11 +1286,14 @@
     <div class="tool-container active" id="iconTool">
       <main>
         <section class="panel">
-          <h2>아이콘 컨트롤</h2>
+          <h2 data-i18n="iconControlTitle">아이콘 컨트롤</h2>
 
           <div class="form-group">
             <div class="emoji-input-row">
-              <label for="emojiInput" class="emoji-inline-label"
+              <label
+                for="emojiInput"
+                class="emoji-inline-label"
+                data-i18n="iconEmojiLabel"
                 >아이콘 이모지</label
               >
               <input
@@ -1247,6 +1307,7 @@
                 type="button"
                 class="secondary emoji-picker-toggle"
                 id="emojiPickerButton"
+                data-i18n="emojiPickerButton"
               >
                 😊 이모지 선택
               </button>
@@ -1254,11 +1315,12 @@
             <div class="emoji-picker-layer" id="emojiPicker">
               <div class="emoji-picker">
                 <div class="emoji-picker-header">
-                  <span>이모지 선택</span>
+                  <span data-i18n="emojiPickerTitle">이모지 선택</span>
                   <button
                     type="button"
                     class="secondary emoji-picker-close"
                     id="emojiPickerClose"
+                    data-i18n="emojiPickerClose"
                   >
                     닫기
                   </button>
@@ -1268,11 +1330,12 @@
                     type="button"
                     class="emoji-tab active"
                     data-emoji-tab="frequent"
+                    data-i18n="emojiTabFrequent"
                   >
                     자주 쓰는 이모지
                   </button>
                   <button type="button" class="emoji-tab" data-emoji-tab="all">
-                    모든 이모지
+                    <span data-i18n="emojiTabAll">모든 이모지</span>
                   </button>
                 </div>
                 <div class="emoji-pagination">
@@ -1281,6 +1344,7 @@
                     class="secondary"
                     data-emoji-page="prev"
                     id="emojiPagePrev"
+                    data-i18n="emojiPagePrev"
                   >
                     이전
                   </button>
@@ -1290,6 +1354,7 @@
                     class="secondary"
                     data-emoji-page="next"
                     id="emojiPageNext"
+                    data-i18n="emojiPageNext"
                   >
                     다음
                   </button>
@@ -1301,26 +1366,28 @@
 
           <div class="form-group split">
             <div>
-              <label for="colorStart">그라데이션 시작</label>
+              <label for="colorStart" data-i18n="gradientStart">그라데이션 시작</label>
               <input type="color" id="colorStart" value="#ff8a00" />
             </div>
             <div>
-              <label for="colorEnd">그라데이션 끝</label>
+              <label for="colorEnd" data-i18n="gradientEnd">그라데이션 끝</label>
               <input type="color" id="colorEnd" value="#e52e71" />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="angleInput"
-              >그라데이션 각도 (<span id="angleValue">135</span>°)</label
-            >
+            <label for="angleInput">
+              <span data-i18n="angleLabelText">그라데이션 각도</span>
+              (<span id="angleValue">135</span>°)
+            </label>
             <input type="range" id="angleInput" min="0" max="360" value="135" />
           </div>
 
           <div class="form-group">
-            <label for="radiusInput"
-              >모서리 라운드 (<span id="radiusValue">220</span>px)</label
-            >
+            <label for="radiusInput">
+              <span data-i18n="radiusLabelText">모서리 라운드</span>
+              (<span id="radiusValue">220</span>px)
+            </label>
             <input
               type="range"
               id="radiusInput"
@@ -1331,9 +1398,10 @@
           </div>
 
           <div class="form-group">
-            <label for="emojiSizeInput"
-              >이모지 크기 (<span id="emojiSizeValue">420</span>px)</label
-            >
+            <label for="emojiSizeInput">
+              <span data-i18n="emojiSizeLabelText">이모지 크기</span>
+              (<span id="emojiSizeValue">420</span>px)
+            </label>
             <input
               type="range"
               id="emojiSizeInput"
@@ -1344,9 +1412,10 @@
           </div>
 
           <div class="form-group">
-            <label for="glowInput"
-              >글로우 강도 (<span id="glowValue">0.22</span>)</label
-            >
+            <label for="glowInput">
+              <span data-i18n="glowLabelText">글로우 강도</span>
+              (<span id="glowValue">0.22</span>)
+            </label>
             <input
               type="range"
               step="0.01"
@@ -1358,20 +1427,23 @@
           </div>
 
           <div class="button-row">
-            <button class="secondary" id="randomButton">🎲 랜덤 조합</button>
-            <button class="secondary" id="copyConfigButton">
+            <button class="secondary" id="randomButton" data-i18n="randomButton">
+              🎲 랜덤 조합
+            </button>
+            <button class="secondary" id="copyConfigButton" data-i18n="copyConfigButton">
               📋 설정 복사
             </button>
           </div>
 
           <hr style="margin: 26px 0; border-color: rgba(255, 255, 255, 0.05)" />
 
-          <h2>내보내기</h2>
+          <h2 data-i18n="exportTitle">내보내기</h2>
           <div class="button-row">
             <button
               class="primary"
               data-download-size="1024"
               data-filename="icon-ios-1024.png"
+              data-i18n="exportIosButton"
             >
               🍎 iOS 아이콘 (1024px)
             </button>
@@ -1379,6 +1451,7 @@
               class="primary"
               data-download-size="512"
               data-filename="icon-android-512.png"
+              data-i18n="exportAndroidButton"
             >
               🤖 Android 아이콘 (512px)
             </button>
@@ -1386,14 +1459,15 @@
               class="primary"
               data-download-size="192"
               data-filename="favicon-192.png"
+              data-i18n="exportFaviconButton"
             >
               🌐 Favicon/Web (192px)
             </button>
-            <button class="accent" id="downloadAllButton">
+            <button class="accent" id="downloadAllButton" data-i18n="exportZipButton">
               📦 전체 다운로드 ZIP
             </button>
           </div>
-          <p class="helper">
+          <p class="helper" data-i18n-html="exportHelper">
             Expo / React Native 에서는 <code>assets/icon.png</code> 로 저장 후
             <code>app.json</code> 의 <code>expo.icon</code> 을 해당 경로로
             지정하세요.
@@ -1407,36 +1481,40 @@
               class="icon-preview-img"
               src=""
               alt="아이콘 미리보기"
+              data-i18n-alt="altIconPreview"
             />
           </div>
           <div class="mini-previews">
             <div class="mini-card">
-              <h3>iOS Rounded</h3>
+              <h3 data-i18n="previewIosTitle">iOS Rounded</h3>
               <img
                 class="mini-icon"
                 data-icon-preview-size="180"
                 data-icon-shape="rounded"
                 data-icon-radius="36"
                 alt="iOS 미리보기"
+                data-i18n-alt="altIosPreview"
               />
             </div>
             <div class="mini-card">
-              <h3>Android Circle</h3>
+              <h3 data-i18n="previewAndroidTitle">Android Circle</h3>
               <img
                 class="mini-icon circle"
                 data-icon-preview-size="180"
                 data-icon-shape="circle"
                 alt="Android 미리보기"
+                data-i18n-alt="altAndroidPreview"
               />
             </div>
             <div class="mini-card">
-              <h3>Browser Favicon</h3>
+              <h3 data-i18n="previewBrowserTitle">Browser Favicon</h3>
               <img
                 class="mini-icon square"
                 data-icon-preview-size="140"
                 data-icon-shape="rounded"
                 data-icon-radius="24"
                 alt="Browser 미리보기"
+                data-i18n-alt="altBrowserPreview"
               />
             </div>
           </div>
@@ -1447,23 +1525,33 @@
     <div class="tool-container" id="splashTool">
       <div class="splash-grid">
         <section class="splash-panel">
-          <h2>스플래시 빠른 제작 가이드</h2>
-          <p>
+          <h2 data-i18n="splashGuideTitle">스플래시 빠른 제작 가이드</h2>
+          <p data-i18n="splashGuideDesc">
             아이콘과 동일한 이모지와 그라데이션으로 스플래시 이미지를 자동으로
             만들어줍니다. Expo / React Native / Flutter 등에서 그대로 사용할 수
             있는 1242 × 2688 (iPhone 14 Pro 해상도) PNG를 다운로드하세요.
           </p>
           <ul style="margin: 18px 0; padding-left: 20px">
-            <li>① 아이콘 탭에서 원하는 이모지·컬러를 완성합니다.</li>
-            <li>② 스플래시 탭으로 전환해 미리보기를 확인합니다.</li>
-            <li>③ 아래 다운로드 버튼으로 전체 해상도를 저장합니다.</li>
+            <li data-i18n="splashGuideStep1">
+              ① 아이콘 탭에서 원하는 이모지·컬러를 완성합니다.
+            </li>
+            <li data-i18n="splashGuideStep2">
+              ② 스플래시 탭으로 전환해 미리보기를 확인합니다.
+            </li>
+            <li data-i18n="splashGuideStep3">
+              ③ 아래 다운로드 버튼으로 전체 해상도를 저장합니다.
+            </li>
           </ul>
           <div class="form-group">
-            <label for="splashTitleInput">메인 제목 (줄바꿈 가능)</label>
+            <label for="splashTitleInput" data-i18n="splashTitleLabel"
+              >메인 제목 (줄바꿈 가능)</label
+            >
             <textarea id="splashTitleInput" rows="2">AshLight</textarea>
           </div>
           <div class="form-group">
-            <label for="splashSubtitleInput">보조 문구</label>
+            <label for="splashSubtitleInput" data-i18n="splashSubtitleLabel"
+              >보조 문구</label
+            >
             <input
               type="text"
               id="splashSubtitleInput"
@@ -1471,27 +1559,32 @@
             />
           </div>
           <div class="button-row">
-            <button class="primary" id="downloadSplashButton">
+            <button
+              class="primary"
+              id="downloadSplashButton"
+              data-i18n="splashDownloadButton"
+            >
               🌅 스플래시 PNG (1242 × 2688)
             </button>
-            <button class="secondary" id="splashRandomButton">
+            <button class="secondary" id="splashRandomButton" data-i18n="splashRandomButton">
               🎲 스플래시 문구 랜덤
             </button>
           </div>
-          <p class="helper" style="margin-top: 18px">
+          <p class="helper" style="margin-top: 18px" data-i18n-html="splashHelper">
             생성된 이미지는 <code>assets/splash.png</code> 등 원하는 경로에
             저장한 뒤 <code>app.json</code> 또는 네이티브 프로젝트 설정에
             반영해주세요.
           </p>
         </section>
         <section class="splash-panel">
-          <h2>AshLight 스플래시 미리보기</h2>
+          <h2 data-i18n="splashPreviewTitle">AshLight 스플래시 미리보기</h2>
           <div id="splash-canvas-wrap">
             <img
               id="splashMainPreview"
               class="splash-preview-img"
               src=""
               alt="스플래시 미리보기"
+              data-i18n-alt="altSplashPreview"
             />
           </div>
           <div class="splash-preview">
@@ -1500,13 +1593,14 @@
               class="splash-mini-img"
               src=""
               alt="스플래시 미니 미리보기"
+              data-i18n-alt="altSplashMiniPreview"
             />
           </div>
         </section>
       </div>
     </div>
 
-    <section class="meta-section">
+    <section class="meta-section" data-i18n-html="metaOverviewSection">
       <div class="meta-card">
         <h3>이 서비스로 할 수 있는 것</h3>
         <p>
@@ -1607,7 +1701,7 @@
       </div>
     </section>
 
-    <section class="meta-section" id="guide">
+    <section class="meta-section" id="guide" data-i18n-html="quickStartSection">
       <div class="meta-card">
         <h3>빠른 시작 가이드</h3>
         <ul>
@@ -1635,7 +1729,7 @@
       </div>
     </section>
 
-    <section class="meta-section" id="faq">
+    <section class="meta-section" id="faq" data-i18n-html="faqSection">
       <div class="meta-card">
         <h3>FAQ: 이모지 아이콘/스플래시 활용</h3>
         <ul>
@@ -1701,7 +1795,7 @@
     </section>
 
     <!-- 콘텐츠 페이지들 -->
-    <div class="content-page" id="guide-page">
+    <div class="content-page" id="guide-page" data-i18n-html="guidePage">
       <a
         href="#home"
         class="back-to-tool"
@@ -2018,7 +2112,7 @@
       </p>
     </div>
 
-    <div class="content-page" id="blog-page">
+    <div class="content-page" id="blog-page" data-i18n-html="blogPage">
       <a
         href="#home"
         class="back-to-tool"
@@ -2148,7 +2242,7 @@
       </div>
     </div>
 
-    <div class="content-page" id="about-page">
+    <div class="content-page" id="about-page" data-i18n-html="aboutPage">
       <a
         href="#home"
         class="back-to-tool"
@@ -2268,7 +2362,7 @@
       </p>
     </div>
 
-    <div class="content-page" id="privacy-page">
+    <div class="content-page" id="privacy-page" data-i18n-html="privacyPage">
       <a
         href="#home"
         class="back-to-tool"
@@ -2432,7 +2526,7 @@
         onmouseout="this.style.color='rgba(255, 255, 255, 0.8)'"
         >AshLight</a
       >
-      Emoji Icon Studio
+      <span data-i18n="footerLabel">Emoji Icon Studio</span>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -2448,6 +2542,917 @@
         splashTitle: "AshLight",
         splashSubtitle: "EMOJI ICON STUDIO",
       };
+
+      const translations = {
+        ko: {
+          alertCopySuccess: "설정이 복사되었습니다. 친구에게 그대로 공유하세요!",
+          alertCopyFail: "복사에 실패했습니다. (HTTPS 환경 권장)",
+          alertExportFail: "내보내는 중 오류가 발생했습니다.",
+          alertSplashFail: "스플래시를 만드는 중 오류가 발생했습니다.",
+          alertZipMissing:
+            "ZIP 라이브러리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.",
+          alertZipFail: "패키지를 만드는 중 오류가 발생했습니다.",
+          alertClipboardSuccess: "클립보드에 복사되었습니다!",
+          alertClipboardFail:
+            "복사에 실패했습니다. HTTPS 환경에서 다시 시도해주세요.",
+          renderLoading: "⏳ 렌더링 중...",
+          packagingLoading: "⏳ 패키징 중...",
+          accountMissing: "계좌번호를 입력해주세요",
+          accountPrompt: "계좌번호를 먼저 입력해주세요.",
+          accountCopied: "✅ 복사되었습니다!",
+          accountCopyFail:
+            "복사에 실패했습니다. 계좌번호를 직접 선택하여 복사해주세요.",
+        },
+        en: {
+          metaTitle: "⚡️ AshLight Emoji Icon Studio",
+          navHome: "Home",
+          navGuide: "Guide",
+          navBlog: "Blog",
+          navAbout: "About",
+          navPrivacy: "Privacy Policy",
+          dableWidgetLabel: "Recommended widget",
+          heroTitle: "⚡️ AshLight Emoji Icon Studio",
+          heroDesc1:
+            "Drop in a single emoji and AshLight generates your icon, favicon, and app store assets in one go. Pick colors, spark ideas with random presets, and hit download, ready to ship.",
+          heroDesc2:
+            "Optimized for iOS, Android, and web. Fully compatible with cross-platform frameworks like React Native, Expo, and Flutter. Create professional-grade app icons in minutes without heavy design tools.",
+          heroDesc3:
+            "This tool is built to help anyone finish a <strong>store-ready icon and splash set in 5 minutes</strong>. You can check emoji meanings, recommended colors, platform export specs, and real usage examples in one place. It also includes a practical guide that walks through the full icon-to-launch workflow.",
+          heroGuideLink: "📚 Complete Guide",
+          heroBlogLink: "📝 Blog",
+          heroThanks:
+            "Thanks for using AshLight. Have a great day. Hope this tool helps you launch something awesome!",
+          tabIconStudio: "🪄 Icon Studio",
+          tabSplashStudio: "🌅 Splash Studio",
+          iconControlTitle: "Icon Controls",
+          iconEmojiLabel: "Icon Emoji",
+          emojiPickerButton: "😊 Pick Emoji",
+          emojiPickerTitle: "Pick an Emoji",
+          emojiPickerClose: "Close",
+          emojiTabFrequent: "Frequent",
+          emojiTabAll: "All Emojis",
+          emojiPagePrev: "Prev",
+          emojiPageNext: "Next",
+          gradientStart: "Gradient Start",
+          gradientEnd: "Gradient End",
+          angleLabelText: "Gradient Angle",
+          radiusLabelText: "Corner Radius",
+          emojiSizeLabelText: "Emoji Size",
+          glowLabelText: "Glow Intensity",
+          randomButton: "🎲 Random Combo",
+          copyConfigButton: "📋 Copy Settings",
+          exportTitle: "Export",
+          exportIosButton: "🍎 iOS Icon (1024px)",
+          exportAndroidButton: "🤖 Android Icon (512px)",
+          exportFaviconButton: "🌐 Favicon/Web (192px)",
+          exportZipButton: "📦 Download All ZIP",
+          exportHelper:
+            "For Expo / React Native, save as <code>assets/icon.png</code> and set <code>expo.icon</code> in <code>app.json</code>.",
+          previewIosTitle: "iOS Rounded",
+          previewAndroidTitle: "Android Circle",
+          previewBrowserTitle: "Browser Favicon",
+          altIconPreview: "Icon preview",
+          altIosPreview: "iOS preview",
+          altAndroidPreview: "Android preview",
+          altBrowserPreview: "Browser preview",
+          splashGuideTitle: "Splash Quick Guide",
+          splashGuideDesc:
+            "Generate splash images automatically with the same emoji and gradient as your icon. Download a 1242 x 2688 (iPhone 14 Pro resolution) PNG ready for Expo / React Native / Flutter.",
+          splashGuideStep1:
+            "① Finish your emoji and colors in the Icon tab.",
+          splashGuideStep2:
+            "② Switch to the Splash tab and check the preview.",
+          splashGuideStep3:
+            "③ Download the full-resolution asset below.",
+          splashTitleLabel: "Main Title (line breaks ok)",
+          splashSubtitleLabel: "Subtitle",
+          splashDownloadButton: "🌅 Splash PNG (1242 x 2688)",
+          splashRandomButton: "🎲 Random Splash Copy",
+          splashHelper:
+            "Save the generated image as <code>assets/splash.png</code> (or any path) and wire it in <code>app.json</code> or native project settings.",
+          splashPreviewTitle: "AshLight Splash Preview",
+          altSplashPreview: "Splash preview",
+          altSplashMiniPreview: "Splash mini preview",
+          footerLabel: "Emoji Icon Studio",
+          alertCopySuccess: "Settings copied. Share it with a friend!",
+          alertCopyFail: "Copy failed. (HTTPS recommended)",
+          alertExportFail: "An error occurred while exporting.",
+          alertSplashFail: "An error occurred while generating the splash.",
+          alertZipMissing:
+            "Could not load the ZIP library. Please refresh and try again.",
+          alertZipFail: "An error occurred while building the package.",
+          alertClipboardSuccess: "Copied to clipboard!",
+          alertClipboardFail:
+            "Copy failed. Please retry in an HTTPS environment.",
+          renderLoading: "⏳ Rendering...",
+          packagingLoading: "⏳ Packaging...",
+          accountMissing: "Please enter an account number",
+          accountPrompt: "Please enter an account number first.",
+          accountCopied: "✅ Copied!",
+          accountCopyFail:
+            "Copy failed. Please select the account number and copy manually.",
+          metaOverviewSection: `
+            <div class="meta-card">
+              <h3>What You Can Do Here</h3>
+              <p>
+                AshLight Emoji Icon Studio is a pro-grade tool for developers and designers. Create app icons, favicons, and splash screens in minutes without heavy design software.
+              </p>
+              <ul>
+                <li><strong>App icons:</strong> High-res assets for iOS and Android stores</li>
+                <li><strong>Favicons:</strong> Multi-size favicons for web branding</li>
+                <li><strong>Splash screens:</strong> Launch images that match your icon</li>
+                <li><strong>Bulk download:</strong> All sizes in one ZIP</li>
+              </ul>
+            </div>
+            <div class="meta-card">
+              <h3>Supported Platforms & Sizes</h3>
+              <p>Optimized for a wide range of platforms and devices.</p>
+              <ul>
+                <li><strong>iOS:</strong> 1024x1024px (App Store), 180x180px, 120x120px</li>
+                <li><strong>Android:</strong> 512x512px (Play Store), 192x192px, 144x144px</li>
+                <li><strong>Web:</strong> 192x192px, 128x128px, 64x64px, 32x32px, 16x16px</li>
+                <li><strong>React Native / Expo:</strong> All standard sizes supported</li>
+              </ul>
+            </div>
+            <div class="meta-card">
+              <h3>Why Emoji Icons?</h3>
+              <p>Emoji is a universal visual language. Emoji-based icons have clear advantages:</p>
+              <ul>
+                <li><strong>Instant recognition:</strong> Users understand the meaning at a glance</li>
+                <li><strong>Memorable:</strong> Simple, bold shapes stick in memory</li>
+                <li><strong>Cross-cultural:</strong> Friendly across languages and regions</li>
+                <li><strong>Easy to build:</strong> Professional output without complex design</li>
+              </ul>
+            </div>
+            <div class="meta-card">
+              <h3>Use Cases</h3>
+              <p>AshLight fits a wide range of projects:</p>
+              <ul>
+                <li><strong>Prototypes:</strong> Fast MVP icons</li>
+                <li><strong>Side projects:</strong> Portfolio-ready assets</li>
+                <li><strong>Startups:</strong> Save budget without losing polish</li>
+                <li><strong>Learning:</strong> Create assets while learning RN/Flutter</li>
+                <li><strong>Web branding:</strong> Favicons and PWA icons</li>
+              </ul>
+            </div>`,
+          quickStartSection: `
+            <div class="meta-card">
+              <h3>Quick Start Guide</h3>
+              <ul>
+                <li>① Enter an emoji or use a random preset for inspiration.</li>
+                <li>② Fine-tune gradient colors, angle, and emoji size.</li>
+                <li>③ Download the size you need for iOS / Android / Web.</li>
+                <li>④ In the <code>Splash Studio</code> tab, export the matching splash PNG.</li>
+              </ul>
+              <p style="margin-top: 16px">
+                After replacing icons, remember to submit a new build to the App Store / Play Store or update your website favicon.
+              </p>
+            </div>
+            <div class="meta-card ad-card" aria-label="Recommended ads">
+              <h3 style="margin: 0 0 10px">Partner Ads</h3>
+            </div>
+          `,
+          faqSection: `
+            <div class="meta-card">
+              <h3>FAQ: Emoji Icons & Splash Use</h3>
+              <ul>
+                <li><strong>Where can I use these?</strong> App Store icons, web favicons, PWAs, internal test builds, marketing landing pages, and more.</li>
+                <li><strong>Any copyright or store review issues?</strong> Emojis come from OS fonts and backgrounds are user-generated, so this is generally fine. Avoid imitating brand logos or characters.</li>
+                <li><strong>Can I add ads/sponsorship buttons?</strong> Yes. Ads are placed in visible, separated areas and sponsor buttons are policy-safe.</li>
+                <li><strong>Need changes after launch?</strong> Load the same preset, tweak colors and emoji, and upload new assets.</li>
+              </ul>
+            </div>
+            <div class="meta-card">
+              <h3>How-To: Ship Icons & Splash in 5 Minutes</h3>
+              <ol>
+                <li>Pick your emoji and set gradient colors, angle, and corner radius.</li>
+                <li>Check the iOS/Android/Web preview cards and adjust sizing.</li>
+                <li>Download individual sizes or the ZIP pack.</li>
+                <li>In the Splash tab, export a 1242x2688 PNG with the same style.</li>
+                <li>Apply assets in Xcode Assets, Android Image Asset Studio, web link tags, or Expo <code>app.json</code>.</li>
+              </ol>
+            </div>
+            <div class="meta-card">
+              <h3>Operations & Trust</h3>
+              <ul>
+                <li><strong>Creator:</strong> AshLight (ashlight2510@gmail.com)</li>
+                <li><strong>Last update:</strong> 2025-01 · Icon/Splash quality improvements</li>
+                <li><strong>Data location:</strong> All rendering happens in-browser, nothing is uploaded</li>
+                <li><strong>Test devices:</strong> iPhone 14 Pro, Pixel 7, MacBook Pro (Safari/Chrome)</li>
+                <li><strong>Ad policy:</strong> Ads appear only in visible, separated areas</li>
+              </ul>
+            </div>
+          `,
+          guidePage: `
+            <a href="#home" class="back-to-tool" onclick="showPage('home'); return false;">← Back to home</a>
+            <h1>📚 Complete Guide: From Emoji Icons to Launch</h1>
+            <p>
+              This guide walks you through making app icons, favicons, and splash screens with AshLight. You will learn the best practices for iOS, Android, and web so you can ship assets fast.
+            </p>
+            <h2>1. Icon Basics</h2>
+            <h3>1.1 Choosing an Emoji</h3>
+            <p>
+              The emoji is the heart of the icon. A single, bold emoji is usually the clearest and most recognizable. Complex emoji combinations often look messy at small sizes.
+            </p>
+            <ul>
+              <li><strong>Recommended:</strong> 🚀, ⚡, 💡, 🎨, 🔥, ⭐, 🎯, 💎 for simple, bold shapes</li>
+              <li><strong>Avoid:</strong> multi-emoji combos, text-heavy emoji, overly tiny details</li>
+              <li><strong>Platform differences:</strong> Emoji rendering varies between iOS and Android, so always check previews</li>
+            </ul>
+            <h3>1.2 Picking Gradient Colors</h3>
+            <p>
+              Gradients set the mood. Choose colors that match your brand or highlight the emoji character.
+            </p>
+            <ul>
+              <li><strong>Bright tones:</strong> energetic, friendly (e.g., #ff8a00 - #e52e71)</li>
+              <li><strong>Dark tones:</strong> professional, sleek (e.g., #1a1a2e - #16213e)</li>
+              <li><strong>High contrast:</strong> bold, attention-grabbing (e.g., #00f2fe - #4facfe)</li>
+              <li><strong>Color theory:</strong> complementary or analogous palettes deliver harmony</li>
+            </ul>
+            <h3>1.3 Angle & Radius</h3>
+            <p>
+              The gradient angle can be set from 0° to 360°. The default 135° feels the most natural. Radius controls how far the gradient spreads around the emoji.
+            </p>
+            <ul>
+              <li><strong>0°:</strong> vertical gradient from top to bottom</li>
+              <li><strong>90°:</strong> horizontal gradient from left to right</li>
+              <li><strong>135°:</strong> diagonal gradient (default, most natural)</li>
+              <li><strong>Radius:</strong> higher values spread the gradient wider</li>
+            </ul>
+            <h2>2. iOS App Icons</h2>
+            <h3>2.1 Required Sizes</h3>
+            <p>
+              iOS needs multiple sizes across devices. Xcode can resize automatically, but you should always provide a 1024x1024px icon for best quality.
+            </p>
+            <ul>
+              <li><strong>App Store:</strong> 1024x1024px (required)</li>
+              <li><strong>iPhone:</strong> 180x180px (3x), 120x120px (2x)</li>
+              <li><strong>iPad:</strong> 152x152px (2x), 76x76px (1x)</li>
+              <li><strong>Mac Catalyst:</strong> 1024x1024px, 512x512px, 256x256px</li>
+            </ul>
+            <h3>2.2 Applying in Xcode</h3>
+            <p>Add icons to the AppIcon set inside Assets.xcassets.</p>
+            <ol>
+              <li>Open your project in Xcode</li>
+              <li>Select <code>Assets.xcassets</code> in the navigator</li>
+              <li>Click <code>AppIcon</code></li>
+              <li>Drag each size into the matching slot</li>
+              <li>Add 1024x1024px to the "App Store" slot</li>
+            </ol>
+            <h3>2.3 Notes</h3>
+            <ul>
+              <li>Icons must be fully opaque (use PNG-24)</li>
+              <li>Corners are rounded automatically, so use square assets</li>
+              <li>Avoid text or app names inside the icon</li>
+              <li>Follow Apple Human Interface Guidelines</li>
+            </ul>
+            <h2>3. Android App Icons</h2>
+            <h3>3.1 Required Sizes</h3>
+            <p>Android supports multiple densities. Provide each size for sharp output.</p>
+            <ul>
+              <li><strong>mdpi:</strong> 48x48px</li>
+              <li><strong>hdpi:</strong> 72x72px</li>
+              <li><strong>xhdpi:</strong> 96x96px</li>
+              <li><strong>xxhdpi:</strong> 144x144px</li>
+              <li><strong>xxxhdpi:</strong> 192x192px</li>
+              <li><strong>Play Store:</strong> 512x512px (required)</li>
+            </ul>
+            <h3>3.2 Applying in Android Studio</h3>
+            <p>Use Image Asset Studio to generate the launcher icon set.</p>
+            <ol>
+              <li>Open your project in Android Studio</li>
+              <li>Right-click <code>res</code> &gt; <code>New &gt; Image Asset</code></li>
+              <li>Set Asset Type to "Launcher Icons"</li>
+              <li>Select your downloaded icon as the foreground image</li>
+              <li>Set or remove a background color as needed</li>
+              <li>Click "Next" then "Finish"</li>
+            </ol>
+            <h3>3.3 Adaptive Icons (Android 8.0+)</h3>
+            <p>
+              Adaptive Icons can change shape across devices. AshLight positions emoji within the safe zone for consistent results.
+            </p>
+            <h2>4. Web Favicons</h2>
+            <h3>4.1 Recommended Sizes</h3>
+            <p>Favicons are used across browsers and platforms. Prepare at least these sizes.</p>
+            <ul>
+              <li><strong>favicon.ico:</strong> 16x16, 32x32, 48x48 (multi-resolution)</li>
+              <li><strong>apple-touch-icon:</strong> 180x180px (iOS home screen)</li>
+              <li><strong>android-chrome:</strong> 192x192px, 512x512px</li>
+              <li><strong>Other:</strong> 32x32px, 96x96px, etc.</li>
+            </ul>
+            <h3>4.2 Add Favicons to HTML</h3>
+            <p>Add favicon links in your <code>&lt;head&gt;</code> section.</p>
+            <pre><code>&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;
+&lt;link rel="manifest" href="/site.webmanifest"&gt;</code></pre>
+            <h3>4.3 Web App Manifest</h3>
+            <p>For PWAs, create a <code>manifest.json</code> with icon references.</p>
+            <h2>5. React Native / Expo</h2>
+            <h3>5.1 Expo Project</h3>
+            <p>Expo reads icon settings from <code>app.json</code>.</p>
+            <ol>
+              <li>Save the icon to <code>assets/icon.png</code></li>
+              <li>Set <code>expo.icon</code> in <code>app.json</code>:</li>
+            </ol>
+            <pre><code>{
+  "expo": {
+    "icon": "./assets/icon.png",
+    ...
+  }
+}</code></pre>
+            <li>After changes, run <code>expo prebuild</code> or rebuild your app</li>
+            <h3>5.2 React Native (Bare Workflow)</h3>
+            <p>Configure iOS and Android separately in the bare workflow.</p>
+            <ul>
+              <li><strong>iOS:</strong> Add icons to Xcode Assets.xcassets (see iOS guide)</li>
+              <li><strong>Android:</strong> Use Android Studio Image Asset Studio (see Android guide)</li>
+            </ul>
+            <h2>6. Splash Screens</h2>
+            <h3>6.1 What is a Splash Screen?</h3>
+            <p>It's the launch screen shown while your app loads. Use a consistent design with your icon to reinforce branding.</p>
+            <h3>6.2 iOS Splash</h3>
+            <p>
+              iOS uses storyboards or launch screens. You can use AshLight's splash output or set it manually in Xcode.
+            </p>
+            <h3>6.3 Android Splash</h3>
+            <p>
+              Android uses images in <code>res/drawable</code> and themes in <code>AndroidManifest.xml</code>.
+            </p>
+            <h2>7. Store Submission Notes</h2>
+            <h3>7.1 App Store (iOS)</h3>
+            <ul>
+              <li>1024x1024px icons must be fully opaque</li>
+              <li>Do not include text, copyright marks, or watermarks</li>
+              <li>Follow Apple design guidelines</li>
+              <li>Keep screenshots visually consistent with the icon</li>
+            </ul>
+            <h3>7.2 Google Play (Android)</h3>
+            <ul>
+              <li>Provide a 512x512px high-res icon</li>
+              <li>Use 32-bit PNG format</li>
+              <li>No transparent backgrounds</li>
+              <li>Icon corners are rounded automatically</li>
+            </ul>
+            <h2>8. Troubleshooting</h2>
+            <h3>8.1 Icon Not Displaying Correctly</h3>
+            <ul>
+              <li>Check file name and path</li>
+              <li>Clear cache and reinstall the app</li>
+              <li>Verify icon dimensions</li>
+              <li>Confirm file format (PNG recommended)</li>
+            </ul>
+            <h3>8.2 Colors Look Different</h3>
+            <ul>
+              <li>Use the sRGB color profile</li>
+              <li>Check device color calibration settings</li>
+              <li>Adjust gradient angle and test again</li>
+            </ul>
+            <h2>9. Best Practices</h2>
+            <ul>
+              <li><strong>Consistency:</strong> Keep icon, splash, and in-app UI aligned</li>
+              <li><strong>Simplicity:</strong> Simple icons are easier to recognize</li>
+              <li><strong>Testing:</strong> Verify across devices and resolutions</li>
+              <li><strong>Updates:</strong> Consider improving icons with each release</li>
+              <li><strong>Branding:</strong> Icons are your first impression, choose carefully</li>
+            </ul>
+            <p style="margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+              Was this guide helpful? If you have more questions, reach out by
+              <a href="mailto:ashlight2510@gmail.com" style="color: rgba(255, 255, 255, 0.9)">email</a>.
+            </p>
+          `,
+          blogPage: `
+            <a href="#home" class="back-to-tool" onclick="showPage('home'); return false;">← Back to home</a>
+            <h1>📝 Blog</h1>
+            <p>Insights and tips on icons, branding, and launching apps.</p>
+            <div class="blog-list">
+              <article class="blog-item">
+                <h3>5 Icon Design Patterns That Transform First Impressions</h3>
+                <div class="blog-meta">Jan 2025 | Design</div>
+                <p>
+                  Your icon is the first thing users notice in the store. We break down effective icon patterns and explain which styles fit which categories, from minimal forms to gradient-driven and emoji-based designs. Includes safe margin ratios, high-contrast palettes, and dark-mode tweaks.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Common Store Rejections: Icon Issues and Fixes</h3>
+                <div class="blog-meta">Jan 2025 | App Store Optimization</div>
+                <p>
+                  Store reviews often reject apps over icon problems. We cover the top reasons, including copyright risks, guideline violations, and quality issues, and provide concrete fixes with real examples. Includes a checklist for resolution, transparency, and text usage.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Why Emoji Icons Work: Recognition & Brand Memory</h3>
+                <div class="blog-meta">Jan 2025 | UX/UI</div>
+                <p>
+                  Emoji is a universal visual language. We explore the psychology and marketing impact of emoji-based icons, including faster recognition, stronger recall, and cultural symbolism, plus tips on meaning transfer and color cues.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Real-World Guide: Replacing Icons in React Native & Expo</h3>
+                <div class="blog-meta">Jan 2025 | Development</div>
+                <p>
+                  Learn the practical steps of swapping icons in React Native projects. We compare Expo managed vs. bare workflows, address build cache issues, and cover resolution handling with real examples.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Favicon Deep Dive: The First Step of Web Identity</h3>
+                <div class="blog-meta">Jan 2025 | Web Dev</div>
+                <p>
+                  Favicons are tiny yet powerful. This post covers multi-browser support, PWA usage, SEO impact, and how to ensure perfect rendering across platforms.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Gradient Color Guide: Psychology & Branding</h3>
+                <div class="blog-meta">Jan 2025 | Design</div>
+                <p>
+                  Color choices influence user emotions and behavior. We analyze the psychology of gradient palettes and share category-specific recommendations, from theory to practical application.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Icon A/B Tests After Launch: What Drives More Installs?</h3>
+                <div class="blog-meta">Jan 2025 | Marketing</div>
+                <p>
+                  We examine how small icon changes impact download rates. Learn A/B testing methodology, key variables (color, shape, emoji choice), and how to interpret results.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Why I Built This Tool: A Developer's Story</h3>
+                <div class="blog-meta">Jan 2025 | Dev Story</div>
+                <p>
+                  The origin story of AshLight, the pain points from building React Native apps, and how this tool aims to solve real icon-creation challenges.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>Icon Trends 2025: Styles to Watch</h3>
+                <div class="blog-meta">Jan 2025 | Trends</div>
+                <p>
+                  We review 2025 icon trends, including minimalism, neo-morphism, bold gradients, and the rise of emoji-based icons, plus pros and cons for each.
+                </p>
+              </article>
+              <article class="blog-item">
+                <h3>An Icon Guide for Cross-Platform App Developers</h3>
+                <div class="blog-meta">Jan 2025 | Development</div>
+                <p>
+                  Strategies for managing icons across Flutter, React Native, Xamarin, and more. Learn how to reuse sources, handle platform differences, and automate your pipeline.
+                </p>
+              </article>
+            </div>
+          `,
+          aboutPage: `
+            <a href="#home" class="back-to-tool" onclick="showPage('home'); return false;">← Back to home</a>
+            <h1>💡 About AshLight</h1>
+            <h2>Service Overview</h2>
+            <p>
+              AshLight Emoji Icon Studio helps developers and designers create app icons, favicons, and splash screens quickly with a web-based workflow.
+            </p>
+            <p>
+              You can craft professional icons with a single emoji, adjust gradients, angles, and sizes to get the exact style you want.
+            </p>
+            <h2>Why We Built It</h2>
+            <p>
+              Building React Native apps exposed how painful icon creation can be. Professional tools were expensive and time-consuming, while lightweight tools were too limited.
+            </p>
+            <p>
+              Emoji icons are friendly and memorable, yet there were few easy ways to create them at high quality. We wanted a simple but powerful tool anyone could use fast.
+            </p>
+            <h2>Key Features</h2>
+            <ul>
+              <li><strong>Emoji-based icon creation:</strong> Generate multiple styles from a single emoji</li>
+              <li><strong>Customization:</strong> Fine-tune gradients, angles, radius, and size</li>
+              <li><strong>Multi-resolution support:</strong> Optimized sizes for iOS, Android, and web</li>
+              <li><strong>Splash screens:</strong> Consistent splash outputs aligned with your icon</li>
+              <li><strong>One-click download:</strong> Download all sizes in one ZIP</li>
+              <li><strong>Random presets:</strong> Inspiration from curated color combos</li>
+            </ul>
+            <h2>Who It's For</h2>
+            <ul>
+              <li><strong>Developers:</strong> Create icons quickly for prototypes or side projects</li>
+              <li><strong>Designers:</strong> Visualize ideas fast with minimal overhead</li>
+              <li><strong>Startups:</strong> Save budget without sacrificing quality</li>
+              <li><strong>Students & hobbyists:</strong> Build portfolio-ready assets</li>
+            </ul>
+            <h2>Tech Stack</h2>
+            <p>
+              AshLight is built with pure HTML, CSS, and JavaScript, making it fast, lightweight, and responsive.
+            </p>
+            <ul>
+              <li><strong>HTML5 Canvas:</strong> High-quality rendering</li>
+              <li><strong>JSZip:</strong> ZIP export for multiple files</li>
+              <li><strong>Responsive design:</strong> Optimized for mobile and desktop</li>
+            </ul>
+            <h2>Roadmap</h2>
+            <p>Planned features:</p>
+            <ul>
+              <li>More emoji combination options</li>
+              <li>Custom font support</li>
+              <li>Icon gallery and templates</li>
+              <li>Public API (planned)</li>
+              <li>Auto dark/light mode</li>
+              <li>History (save recent icons)</li>
+            </ul>
+            <h2>Contact & Feedback</h2>
+            <p>
+              For bug reports, suggestions, or questions, email
+              <a href="mailto:ashlight2510@gmail.com" style="color: rgba(255, 255, 255, 0.9)">ashlight2510@gmail.com</a>.
+              Your feedback helps us improve.
+            </p>
+            <h2>Support</h2>
+            <p>
+              This service is funded personally to cover hosting and domain costs. If it helped you, consider a small donation to support ongoing development.
+            </p>
+          `,
+          privacyPage: `
+            <a href="#home" class="back-to-tool" onclick="showPage('home'); return false;">← Back to home</a>
+            <h1>🔒 Privacy Policy</h1>
+            <p><strong>Last updated: January 2025</strong></p>
+            <h2>1. Purpose of Processing Personal Data</h2>
+            <p>
+              AshLight Emoji Icon Studio ("Service") processes personal data only for the purposes below. Data is not used for any other purpose unless required by law or with consent.
+            </p>
+            <ul>
+              <li>Service delivery: Provide icon and splash generation tools</li>
+              <li>Service improvement: Enhance user experience and quality</li>
+              <li>Customer support: Respond to inquiries and technical help</li>
+            </ul>
+            <h2>2. Retention Period</h2>
+            <p>
+              The Service does not currently collect personal data. All processing happens locally in the browser and is not transmitted to servers.
+            </p>
+            <p>
+              If data collection is introduced in the future, retention will follow legal requirements or user consent terms.
+            </p>
+            <h2>3. Categories of Personal Data</h2>
+            <p>
+              The Service does not collect personal data. Emoji, colors, and settings stay in the browser and are never uploaded.
+            </p>
+            <p>
+              Some technical data may be collected automatically during use:
+            </p>
+            <ul>
+              <li>IP address, cookies, access time, usage logs (server logs)</li>
+              <li>Browser type/version and OS information (technical data)</li>
+            </ul>
+            <h2>4. Sharing with Third Parties</h2>
+            <p>
+              Personal data is not shared with third parties except when required by law or with explicit consent.
+            </p>
+            <ul>
+              <li>With user consent</li>
+              <li>When required by law or lawful authority requests</li>
+            </ul>
+            <h2>5. Outsourcing</h2>
+            <p>
+              The Service does not outsource personal data processing. If outsourcing becomes necessary, we will comply with relevant laws and provide prior notice.
+            </p>
+            <h2>6. User Rights and How to Exercise Them</h2>
+            <p>Users may exercise the following rights:</p>
+            <ul>
+              <li>Request access to personal data</li>
+              <li>Request correction or deletion</li>
+              <li>Request suspension of processing</li>
+            </ul>
+            <p>
+              Requests can be submitted in writing or by email, and we will respond without delay.
+            </p>
+            <h2>7. Data Destruction</h2>
+            <p>
+              Personal data is destroyed when retention periods expire or purposes are achieved. Methods include:
+            </p>
+            <ul>
+              <li><strong>Procedure:</strong> Internal policy and applicable laws</li>
+              <li><strong>Method:</strong> Irreversible deletion for electronic records</li>
+            </ul>
+            <h2>8. Data Protection Officer</h2>
+            <p>
+              We have designated a data protection officer to handle privacy inquiries and complaints.
+            </p>
+            <ul>
+              <li><strong>Email:</strong> ashlight2510@gmail.com</li>
+            </ul>
+            <p>
+              Please contact the officer for any privacy issues, complaints, or requests.
+            </p>
+            <h2>9. Security Measures</h2>
+            <p>
+              The Service applies administrative, technical, and physical safeguards:
+            </p>
+            <ul>
+              <li>Administrative: internal policies and staff training</li>
+              <li>Technical: access control, encryption, security software</li>
+              <li>Physical: restricted access to facilities</li>
+            </ul>
+            <h2>10. Policy Updates</h2>
+            <p>
+              This policy is effective January 2025. Updates will be announced at least 7 days prior to changes.
+            </p>
+            <h2>11. Cookies & Tracking</h2>
+            <p>
+              Cookies may be used to improve user experience. You can disable cookies in your browser, but some features may be limited.
+            </p>
+            <h2>12. Contact</h2>
+            <p>For questions about this policy, contact:</p>
+            <ul>
+              <li><strong>Email:</strong> ashlight2510@gmail.com</li>
+            </ul>
+          `,
+        },
+      };
+
+      const originalTitle = document.title;
+      const originalText = new Map();
+      const originalHtml = new Map();
+      const originalAlt = new Map();
+      const originalAria = new Map();
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        originalText.set(el, el.textContent);
+      });
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        originalHtml.set(el, el.innerHTML);
+      });
+      document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+        originalAlt.set(el, el.getAttribute("alt") || "");
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+        originalAria.set(el, el.getAttribute("aria-label") || "");
+      });
+
+      let currentLang = "ko";
+
+      function t(key, vars = {}) {
+        const langTable = translations[currentLang] || translations.ko;
+        const template = langTable?.[key] ?? translations.ko?.[key] ?? key;
+        if (typeof template !== "string") {
+          return template;
+        }
+        return template.replace(/\{(\w+)\}/g, (_, token) =>
+          vars[token] !== undefined ? vars[token] : `{${token}}`
+        );
+      }
+
+      function applyTranslations() {
+        const isEnglish = currentLang === "en";
+        document.title = isEnglish ? t("metaTitle") : originalTitle;
+
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          if (isEnglish) {
+            el.textContent = t(el.dataset.i18n);
+          } else if (originalText.has(el)) {
+            el.textContent = originalText.get(el);
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+          if (isEnglish) {
+            const key = el.dataset.i18nHtml;
+            const value = t(key);
+            if (value && value !== key) {
+              el.innerHTML = value;
+            }
+          } else if (originalHtml.has(el)) {
+            el.innerHTML = originalHtml.get(el);
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+          if (isEnglish) {
+            el.setAttribute("alt", t(el.dataset.i18nAlt));
+          } else if (originalAlt.has(el)) {
+            el.setAttribute("alt", originalAlt.get(el));
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+          if (isEnglish) {
+            el.setAttribute("aria-label", t(el.dataset.i18nAria));
+          } else if (originalAria.has(el)) {
+            el.setAttribute("aria-label", originalAria.get(el));
+          }
+        });
+      }
+
+      function setLang(lang, options = {}) {
+        const nextLang = translations[lang] ? lang : "ko";
+        currentLang = nextLang;
+        document.documentElement.lang = nextLang;
+        localStorage.setItem("preferredLang", nextLang);
+        document.querySelectorAll(".lang-switch button").forEach((button) => {
+          button.classList.toggle("active", button.dataset.lang === nextLang);
+        });
+        applyTranslations();
+        if (document.getElementById("faq-ld")) {
+          applyStructuredData();
+        } else {
+          document.addEventListener("DOMContentLoaded", applyStructuredData, {
+            once: true,
+          });
+        }
+
+        if (options.updateUrl) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("lang", nextLang);
+          window.history.replaceState({}, "", url);
+        }
+      }
+
+      function detectLang() {
+        const params = new URLSearchParams(window.location.search);
+        const paramLang = params.get("lang");
+        if (translations[paramLang]) return paramLang;
+        const stored = localStorage.getItem("preferredLang");
+        if (translations[stored]) return stored;
+        const browser = navigator.language?.toLowerCase() || "";
+        return browser.startsWith("en") ? "en" : "ko";
+      }
+
+      function applyStructuredData() {
+        const faqSchema = {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity:
+            currentLang === "en"
+              ? [
+                  {
+                    "@type": "Question",
+                    name: "Where can I use emoji icons?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "You can use them for App Store / Google Play icons, web favicons, PWAs, internal test builds, marketing landing pages, and more. We provide size-specific PNGs ready to apply.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "Any copyright or store review issues?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "We use OS-provided emoji fonts and the background graphics are user-generated. This is generally acceptable, but avoid imitating brand logos or characters.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "Can I include ads or sponsorship buttons?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "Yes. Ads are placed in visible, separated areas and sponsorship buttons comply with policy guidelines.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "How is it saved? Is anything uploaded?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "All rendering happens in your browser canvas and nothing is uploaded. Downloaded PNGs can be used directly in your project.",
+                    },
+                  },
+                ]
+              : [
+                  {
+                    "@type": "Question",
+                    name: "이모지 아이콘은 어디에 쓸 수 있나요?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "App Store / Google Play 아이콘, 웹 파비콘, PWA, 테스트 빌드, 랜딩 페이지 등 다양한 곳에 사용할 수 있습니다. 해상도별 PNG를 제공해 재가공 없이 바로 적용됩니다.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "저작권이나 스토어 심사에 문제가 없나요?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "각 플랫폼이 제공하는 이모지 폰트를 사용하며, 배경 그래픽은 사용자 제작물이므로 일반적인 사용에서는 문제가 없습니다. 단, 타 브랜드 로고나 캐릭터를 모방하는 이모지는 피해주세요.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "광고/후원 버튼을 넣어도 되나요?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "광고는 콘텐츠와 분리된 가시 영역에 배치했으며, 후원 버튼은 정책 위반 요소가 아닙니다. UI를 가리지 않고 명확히 표시하도록 설계했습니다.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "어떻게 저장되고, 서버로 업로드되나요?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "모든 렌더링은 브라우저 내 Canvas에서 처리되며 서버로 업로드하지 않습니다. 다운로드한 PNG를 바로 프로젝트에 넣으면 됩니다.",
+                    },
+                  },
+                ],
+        };
+
+        const howtoSchema = {
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          name:
+            currentLang === "en"
+              ? "Create icons & splash in 5 minutes with AshLight"
+              : "AshLight로 5분 만에 아이콘·스플래시 완성하기",
+          description:
+            currentLang === "en"
+              ? "Learn how to enter an emoji, tweak gradients, and export iOS/Android/Web icons and a splash image in one go."
+              : "이모지를 입력하고 그라데이션만 조정해 iOS/Android/웹 아이콘과 스플래시를 한 번에 출력하는 방법을 안내합니다.",
+          totalTime: "PT5M",
+          tool: [
+            {
+              "@type": "HowToTool",
+              name: "AshLight Emoji Icon Studio",
+            },
+            {
+              "@type": "HowToTool",
+              name:
+                currentLang === "en"
+                  ? "Web browser (Chrome/Safari)"
+                  : "웹 브라우저 (Chrome/Safari)",
+            },
+          ],
+          supply: [
+            {
+              "@type": "HowToSupply",
+              name: currentLang === "en" ? "1 emoji" : "이모지 1개",
+            },
+            {
+              "@type": "HowToSupply",
+              name:
+                currentLang === "en" ? "Brand color HEX values" : "브랜드 컬러 HEX 값",
+            },
+          ],
+          step:
+            currentLang === "en"
+              ? [
+                  {
+                    "@type": "HowToStep",
+                    name: "Pick emoji and colors",
+                    text: "In the Icon tab, choose an emoji and set gradient start/end colors and the angle.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "Review previews",
+                    text: "Check rounded, circle, and square previews for iOS/Android/Web and adjust sizing.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "Download",
+                    text: "Download platform-specific PNGs or the ZIP bundle.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "Generate splash",
+                    text: "Go to the Splash tab, enter title/subtitle, and export a 1242x2688 PNG.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "Apply to project",
+                    text: "Use Xcode Assets, Android Image Asset Studio, web link tags, or Expo app.json to apply the assets.",
+                  },
+                ]
+              : [
+                  {
+                    "@type": "HowToStep",
+                    name: "이모지와 컬러 선택",
+                    text: "아이콘 탭에서 사용할 이모지와 그라데이션 시작/끝 색상을 입력하고 각도를 맞춥니다.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "프리뷰 확인",
+                    text: "iOS, Android, 웹 파비콘 미리보기 카드에서 라운드/원형/정사각형 모습을 확인하며 크기를 조정합니다.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "다운로드",
+                    text: "플랫폼별 버튼을 눌러 PNG를 저장하거나 ZIP 일괄 다운로드를 선택합니다.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "스플래시 생성",
+                    text: "스플래시 탭으로 이동해 제목/부제목을 입력하고 1242x2688 PNG를 다운로드합니다.",
+                  },
+                  {
+                    "@type": "HowToStep",
+                    name: "프로젝트 반영",
+                    text: "iOS는 Xcode Assets, Android는 Image Asset Studio, 웹은 link 태그, Expo는 app.json의 icon/splash 설정을 업데이트합니다.",
+                  },
+                ],
+        };
+
+        const faqEl = document.getElementById("faq-ld");
+        if (faqEl) {
+          faqEl.textContent = JSON.stringify(faqSchema, null, 2);
+        }
+
+        const howtoEl = document.getElementById("howto-ld");
+        if (howtoEl) {
+          howtoEl.textContent = JSON.stringify(howtoSchema, null, 2);
+        }
+      }
+
+      document.querySelectorAll(".lang-switch button").forEach((button) => {
+        button.addEventListener("click", () => {
+          setLang(button.dataset.lang, { updateUrl: true });
+        });
+      });
+
+      setLang(detectLang(), { updateUrl: false });
 
       function renderHomeDableWidget() {
         if (typeof dable !== "function") return;
@@ -3631,18 +4636,33 @@
         applyState();
       }
 
-      const randomSplashTexts = [
-        { title: "AshLight", subtitle: "EMOJI ICON STUDIO" },
-        {
-          title: "새로운 아이디어\n시작은 간단하게",
-          subtitle: "BUILD FAST, SHIP FASTER",
-        },
-        { title: "Launch Day", subtitle: "READY TO WOW USERS" },
-        { title: "Design Once", subtitle: "ALL PLATFORMS, ONE EMOJI" },
-        { title: "🚀 &nbsp;Rapid Icons", subtitle: "CRAFTED WITH LOVE" },
-        { title: "컬러만 골라주세요", subtitle: "아이콘/스플래시 자동 생성" },
-        { title: "AshLight Studio", subtitle: "BRING YOUR IDEA TO LIGHT" },
-      ];
+      const randomSplashTextsByLang = {
+        ko: [
+          { title: "AshLight", subtitle: "EMOJI ICON STUDIO" },
+          {
+            title: "새로운 아이디어\n시작은 간단하게",
+            subtitle: "BUILD FAST, SHIP FASTER",
+          },
+          { title: "Launch Day", subtitle: "READY TO WOW USERS" },
+          { title: "Design Once", subtitle: "ALL PLATFORMS, ONE EMOJI" },
+          { title: "🚀 &nbsp;Rapid Icons", subtitle: "CRAFTED WITH LOVE" },
+          { title: "컬러만 골라주세요", subtitle: "아이콘/스플래시 자동 생성" },
+          { title: "AshLight Studio", subtitle: "BRING YOUR IDEA TO LIGHT" },
+        ],
+        en: [
+          { title: "AshLight", subtitle: "EMOJI ICON STUDIO" },
+          { title: "New ideas\nStart simple", subtitle: "BUILD FAST, SHIP FASTER" },
+          { title: "Launch Day", subtitle: "READY TO WOW USERS" },
+          { title: "Design Once", subtitle: "ALL PLATFORMS, ONE EMOJI" },
+          { title: "🚀 &nbsp;Rapid Icons", subtitle: "CRAFTED WITH LOVE" },
+          { title: "Just pick colors", subtitle: "AUTO ICON & SPLASH" },
+          { title: "AshLight Studio", subtitle: "BRING YOUR IDEA TO LIGHT" },
+        ],
+      };
+
+      function getRandomSplashTexts() {
+        return randomSplashTextsByLang[currentLang] || randomSplashTextsByLang.ko;
+      }
 
       const randomButton = document.getElementById("randomButton");
       if (randomButton) {
@@ -3650,10 +4670,8 @@
       }
 
       const randomizeSplashTexts = () => {
-        const randomPreset =
-          randomSplashTexts[
-            Math.floor(Math.random() * randomSplashTexts.length)
-          ];
+        const presets = getRandomSplashTexts();
+        const randomPreset = presets[Math.floor(Math.random() * presets.length)];
         state.splashTitle = randomPreset.title;
         state.splashSubtitle = randomPreset.subtitle;
         applyState();
@@ -3679,19 +4697,19 @@
             `radius=${state.radius}px`,
             `title=${state.splashTitle || ""}`,
             `subtitle=${state.splashSubtitle || ""}`,
-          ].join(" | ");
-          try {
-            await navigator.clipboard.writeText(text);
-            alert("설정이 복사되었습니다. 친구에게 그대로 공유하세요!");
-          } catch (error) {
-            alert("복사에 실패했습니다. (HTTPS 환경 권장)");
-          }
-        });
+        ].join(" | ");
+        try {
+          await navigator.clipboard.writeText(text);
+          alert(t("alertCopySuccess"));
+        } catch (error) {
+          alert(t("alertCopyFail"));
+        }
+      });
 
       async function downloadIcon(size, filename, button) {
         button.disabled = true;
         const originalText = button.textContent;
-        button.textContent = "⏳ 렌더링 중...";
+        button.textContent = t("renderLoading");
 
         try {
           const baseCanvas = await renderIconCanvas(size);
@@ -3701,7 +4719,7 @@
           link.click();
         } catch (error) {
           console.error(error);
-          alert("내보내는 중 오류가 발생했습니다.");
+          alert(t("alertExportFail"));
         } finally {
           button.disabled = false;
           button.textContent = originalText;
@@ -3712,7 +4730,7 @@
         if (!splashMainPreview) return;
         button.disabled = true;
         const originalText = button.textContent;
-        button.textContent = "⏳ 렌더링 중...";
+        button.textContent = t("renderLoading");
 
         try {
           const baseCanvas = await renderSplashCanvas(1242, 2688);
@@ -3722,7 +4740,7 @@
           link.click();
         } catch (error) {
           console.error(error);
-          alert("스플래시를 만드는 중 오류가 발생했습니다.");
+          alert(t("alertSplashFail"));
         } finally {
           button.disabled = false;
           button.textContent = originalText;
@@ -3731,15 +4749,13 @@
 
       async function downloadAllAssets(button) {
         if (typeof JSZip === "undefined") {
-          alert(
-            "ZIP 라이브러리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요."
-          );
+          alert(t("alertZipMissing"));
           return;
         }
 
         button.disabled = true;
         const originalText = button.textContent;
-        button.textContent = "⏳ 패키징 중...";
+        button.textContent = t("packagingLoading");
 
         try {
           const baseCanvas = await renderIconCanvas(1024);
@@ -3763,7 +4779,7 @@
           }, 1000);
         } catch (error) {
           console.error(error);
-          alert("패키지를 만드는 중 오류가 발생했습니다.");
+          alert(t("alertZipFail"));
         } finally {
           button.disabled = false;
           button.textContent = originalText;
@@ -3796,10 +4812,10 @@
           if (!text) return;
           try {
             await navigator.clipboard.writeText(text);
-            alert("클립보드에 복사되었습니다!");
+            alert(t("alertClipboardSuccess"));
           } catch (error) {
             console.error(error);
-            alert("복사에 실패했습니다. HTTPS 환경에서 다시 시도해주세요.");
+            alert(t("alertClipboardFail"));
           }
         });
       });
@@ -3883,8 +4899,8 @@
         const accountElement = document.getElementById("accountNumber");
         const accountNumber = accountElement.textContent.trim();
 
-        if (accountNumber === "계좌번호를 입력해주세요") {
-          alert("계좌번호를 먼저 입력해주세요.");
+        if (accountNumber === t("accountMissing")) {
+          alert(t("accountPrompt"));
           return;
         }
 
@@ -3893,7 +4909,7 @@
           .then(() => {
             const copyText = accountElement.nextElementSibling;
             const originalText = copyText.textContent;
-            copyText.textContent = "✓ 복사되었습니다!";
+            copyText.textContent = t("accountCopied");
             copyText.style.color = "rgba(76, 175, 80, 0.9)";
             setTimeout(() => {
               copyText.textContent = originalText;
@@ -3902,13 +4918,11 @@
           })
           .catch((err) => {
             console.error("복사 실패:", err);
-            alert(
-              "복사에 실패했습니다. 계좌번호를 직접 선택하여 복사해주세요."
-            );
+            alert(t("accountCopyFail"));
           });
       }
     </script>
-    <script type="application/ld+json">
+    <script id="faq-ld" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -3948,7 +4962,7 @@
         ]
       }
     </script>
-    <script type="application/ld+json">
+    <script id="howto-ld" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "HowTo",
