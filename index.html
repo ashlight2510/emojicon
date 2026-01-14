@@ -3177,7 +3177,7 @@
         originalAria.set(el, el.getAttribute("aria-label") || "");
       });
 
-      const defaultLang = "en";
+      const defaultLang = "ko";
       const supportedLangs = ["ko", "en"];
       let currentLang = defaultLang;
 
@@ -3280,8 +3280,20 @@
         if (supportedLangs.includes(paramLang)) return paramLang;
         const stored = localStorage.getItem("preferredLang");
         if (supportedLangs.includes(stored)) return stored;
-        const candidate = getRegionPreferredLang(defaultLang);
-        return supportedLangs.includes(candidate) ? candidate : defaultLang;
+        const intlLocale =
+          typeof Intl === "object" && typeof Intl.DateTimeFormat === "function"
+            ? Intl.DateTimeFormat().resolvedOptions().locale
+            : "";
+        const sources = [
+          ...(navigator.languages || []),
+          navigator.language,
+          navigator.userLanguage,
+          intlLocale,
+        ]
+          .filter(Boolean)
+          .map((locale) => locale.toLowerCase());
+        const hasKorean = sources.some((locale) => locale.startsWith("ko"));
+        return hasKorean ? "ko" : "en";
       }
 
       function applyStructuredData() {
