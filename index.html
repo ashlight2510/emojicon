@@ -3181,22 +3181,6 @@
       const supportedLangs = ["ko", "en"];
       let currentLang = defaultLang;
 
-      function getRegionPreferredLang(fallback = defaultLang) {
-        const intlLocale =
-          typeof Intl === "object" && typeof Intl.DateTimeFormat === "function"
-            ? Intl.DateTimeFormat().resolvedOptions().locale
-            : "";
-        const sources = [
-          ...(navigator.languages || []),
-          navigator.language,
-          navigator.userLanguage,
-          intlLocale,
-        ]
-          .filter(Boolean)
-          .map((locale) => locale.toLowerCase());
-        const hasKorean = sources.some((locale) => locale.startsWith("ko"));
-        return hasKorean ? "ko" : fallback;
-      }
 
       function t(key, vars = {}) {
         const langTable = translations[currentLang] || translations.ko;
